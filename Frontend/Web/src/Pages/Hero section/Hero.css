@@ -1,0 +1,234 @@
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #28a745, #e6ffe6);
+    padding: 50px 30px;
+    gap: 30px;
+    color: white;
+    min-height: 40vh; /* Full-screen height */
+    overflow: hidden; /* Prevent overflow issues */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.hero .hero-image img {
+    width: 100%;
+    max-width: 500px; /* Prevent overly large images */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Add depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero .hero-image img:hover {
+    transform: scale(1.05); /* Zoom effect on hover */
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+}
+
+.hero .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center-align the content */
+    justify-content: center;
+    gap: 20px;
+}
+
+.hero .hero-content h1 {
+    font-size: 7rem;
+    /*font-size: clamp(2.5rem, 6vw, 4rem);*/
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero .hero-content p {
+    font-size: 2rem;
+    text-align: center;
+    color: #f9f9f9;
+    margin: 0 15px; /* Adjust for smaller screens */
+    line-height: 1.2;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.hero .read-more {
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    border: none;
+    background: white;
+    color: #28a745;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50px; /* Rounded button */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.hero .read-more:hover {
+    background: #28a745;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero .read-more:focus {
+    outline: 3px dashed #fff;
+    outline-offset: 5px;
+}
+
+.hero .hero-content h1, 
+.hero .hero-content p {
+    text-decoration-thickness: 12px; /* Underline thickness */
+    text-shadow: 6px 6px 6px rgba(0, 0, 0, 0.5); /* Stronger text shadow */
+}
+
+@media (max-width: 768px) {
+    .hero {
+        grid-template-columns: 1fr; /* Single column layout */
+        text-align: center;
+        padding: 30px 15px;
+    }
+
+    .hero .hero-image img {
+        max-width: 80%; /* Adjust image size for small screens */
+        margin: 0 auto;
+    }
+
+    .hero .hero-content {
+        gap: 15px;
+    }
+
+    .hero .hero-content h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem); /* Adjust font size */
+    }
+
+    .hero .hero-content p {
+        font-size: 1.2rem; /* Smaller text */
+    }
+
+    .hero .read-more {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Play Store Section */
+.playstore-section {
+    background: #f9f9f9; /* Light background for contrast */
+    padding: 50px 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow at the top */
+}
+
+.playstore-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 10px;
+}
+
+.playstore-section p {
+    font-size: 1.2rem;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.playstore-section .playstore-button img {
+    width: 200px; /* Size of the Play Store button */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.playstore-section .playstore-button img:hover {
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add depth on hover */
+}
+
+@media (max-width: 768px) {
+    .playstore-section h2 {
+        font-size: 2rem;
+    }
+
+    .playstore-section p {
+        font-size: 1rem;
+    }
+
+    .playstore-section .playstore-button img {
+        width: 150px; /* Smaller size on small screens */
+    }
+}
+
+/* Container styles */
+.app-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+  }
+  
+  /* Button styles */
+  .app-buttons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    min-width: 160px;
+    text-align: center;
+  }
+  
+  .app-buttons a:hover {
+    background-color: #333; /* Slightly lighter black on hover */
+    transform: scale(1.05);
+
+  }
+  
+  /* Text alignment inside buttons */
+  .button-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .text-top {
+    font-size: 12px;
+    font-weight: 300;
+  }
+  
+  .text-bottom {
+    font-size: 16px;
+    font-weight: 600;
+    font-align: center;
+  }
+  
+  /* Specific styles for logos (if needed in the future) */
+  .app-buttons a span {
+    display: block;
+  }
+  
+  
