@@ -27,7 +27,8 @@ class ScreenAccPwd extends StatelessWidget {
 */
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import '../../services/api_service.dart';
+import '../../customer_reg_end/screens_reg_end/screen_reg_end.dart';
 
 class ScreenAccPwd extends StatelessWidget {
   final String name;
@@ -59,25 +60,28 @@ class ScreenAccPwd extends StatelessWidget {
       return;
     }
 
-    final response = await http.post(
-      Uri.parse('http://localhost:4000/api/users/register'),
-      body: {
-        'name': name,
-        'phone': phone,
-        'email': email,
-        'addressNo': addressNo,
-        'street': street,
-        'city': city,
-        'district': district,
-        'password': passwordController.text,
-      },
-    );
+    try {
+      await ApiService.registerUser(
+        name: name,
+        phone: phone,
+        email: email,
+        addressNo: addressNo,
+        street: street,
+        city: city,
+        district: district,
+        password: passwordController.text,
+        role: 'customer',
+      );
 
-    if (response.statusCode == 200) {
-      Navigator.pushNamed(context, '/success');
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error: ${response.body}')));
+      // If registration is successful, navigate to the success screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ScreenRegEnd()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
   }
 
