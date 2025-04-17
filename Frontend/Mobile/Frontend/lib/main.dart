@@ -1,20 +1,179 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'first_page/screens_firstpage/screen_firstpage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'screens/welcome_page.dart';
+import 'screens/about_app.dart';
+import 'screens/role_selection.dart';
+import 'screens/customer_personal_info.dart';
+import 'screens/customer_address.dart';
+import 'screens/customer_password.dart';
+import 'screens/map_location.dart';
+import 'screens/collector_personal_info.dart';
+import 'screens/collector_vehicle.dart';
+import 'screens/collector_waste_types.dart';
+import 'screens/collector_password.dart';
+import 'screens/collector_registration_complete.dart';
+import 'screens/customer_welcome.dart';
+import 'screens/customer_registration_complete.dart';
+import 'screens/collector_welcome.dart';
+import 'models/customer.dart';
 
-void main() {
-  runApp(EcoLiftApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Request location permissions
+  await _requestLocationPermission();
+
+  runApp(const EcoLiftApp());
+}
+
+Future<void> _requestLocationPermission() async {
+  LocationPermission permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return;
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    return;
+  }
 }
 
 class EcoLiftApp extends StatelessWidget {
+  const EcoLiftApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Eco Lift',
+      title: 'EcoLift',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FirstPageScreen(),
+      initialRoute: '/welcome',
+      routes: {
+        '/welcome': (context) => const WelcomePage(),
+        '/about_app': (context) => const AboutApp(),
+        '/role_selection': (context) => RoleSelection(),
+        '/customer_welcome': (context) => const CustomerWelcome(),
+        '/customer_personal_info': (context) => CustomerPersonalInfo(),
+        '/customer_address': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return CustomerAddress(
+            customer: Customer(
+              name: args?['name'] ?? '',
+              email: args?['email'] ?? '',
+              phone: args?['phone'] ?? '',
+            ),
+          );
+        },
+        '/customer_password': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return CustomerPassword(customerInfo: args ?? {});
+        },
+        '/customer_registration_complete': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return CustomerRegistrationComplete(
+            customer: Customer(
+              name: args?['name'] ?? '',
+              email: args?['email'] ?? '',
+              phone: args?['phone'] ?? '',
+              address: args?['address'],
+              city: args?['city'],
+              district: args?['district'],
+              postalCode: args?['postalCode'],
+              password: args?['password'],
+            ),
+          );
+        },
+        '/map_location': (context) => MapLocation(),
+        '/collector_welcome': (context) => CollectorWelcome(),
+        '/collector_personal_info': (context) => CollectorPersonalInfo(),
+        '/collector_vehicle': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return CollectorVehicle(personalInfo: args ?? {});
+        },
+        '/collector_waste_types': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return CollectorWasteTypes(collectorInfo: args ?? {});
+        },
+        '/collector_password': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return CollectorPassword(collectorInfo: args ?? {});
+        },
+        '/collector_registration_complete': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return CollectorRegistrationComplete(collectorInfo: args ?? {});
+        },
+      },
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacementNamed(context, '/welcome');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.green.shade100, Colors.white],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/ecolift_logo.png',
+                height: 200,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'EcoLift',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green.shade900,
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Making Sri Lanka Cleaner and Greener',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
