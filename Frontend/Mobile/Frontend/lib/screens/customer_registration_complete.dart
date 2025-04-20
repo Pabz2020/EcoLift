@@ -5,15 +5,16 @@ class CustomerRegistrationComplete extends StatelessWidget {
   final Customer customer;
 
   const CustomerRegistrationComplete({
-    Key? key,
+    super.key,
     required this.customer,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registration Complete'),
+        backgroundColor: Colors.green,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -37,12 +38,19 @@ class CustomerRegistrationComplete extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               'Welcome, ${customer.name}!',
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             const Text(
               'Your account has been created successfully. You can now log in to your account.',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
               textAlign: TextAlign.center,
             ),
             const Spacer(),
@@ -54,8 +62,19 @@ class CustomerRegistrationComplete extends StatelessWidget {
                   (route) => false,
                 );
               },
-              child: const Text('Go to Login'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+              ),
+              child: const Text(
+                'Go to Login',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

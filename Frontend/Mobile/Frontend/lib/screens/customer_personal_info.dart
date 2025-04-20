@@ -4,7 +4,7 @@ class CustomerPersonalInfo extends StatefulWidget {
   const CustomerPersonalInfo({super.key});
 
   @override
-  _CustomerPersonalInfoState createState() => _CustomerPersonalInfoState();
+  State<CustomerPersonalInfo> createState() => _CustomerPersonalInfoState();
 }
 
 class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
@@ -119,7 +119,7 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                   backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                 ),
-                child: Text('Continue'),
+                child: const Text('Continue'),
               ),
             ],
           ),

@@ -5,8 +5,13 @@ const app = express(); // Create a new express application
 const userRoutes = require('./routes/userRoutes'); // Import routes
 const cors = require('cors'); // Import CORS library
 
-app.use(cors()); // Use CORS to allow requests from different origins
-
+// Configure CORS for Flutter web
+app.use(cors({
+    origin: '*', // Allow all origins for development
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+    credentials: true
+}));
 
 // middleware
 app.use(express.json());
@@ -17,11 +22,13 @@ app.use((req,res,next)=>{
     next();
 })
 
+// Add OPTIONS handling for preflight requests
+app.options('*', cors());
+
 app.use('/api/users', userRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>{
-
     const port = process.env.PORT 
 
     // Define a route for the root of the app
@@ -30,7 +37,6 @@ mongoose.connect(process.env.MONGO_URI)
     })
 })
 .catch((err)=>{
-    
     console.log(err)
 })
 

@@ -5,12 +5,10 @@ class AboutApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: AboutAppWidget(
-          onContinuePressed: () {
-            Navigator.pushNamed(context, '/role_selection');
-          },
+          onContinuePressed: null,
         ),
       ),
     );
@@ -18,9 +16,9 @@ class AboutApp extends StatelessWidget {
 }
 
 class AboutAppWidget extends StatelessWidget {
-  final VoidCallback onContinuePressed;
+  final VoidCallback? onContinuePressed;
 
-  const AboutAppWidget({super.key, required this.onContinuePressed});
+  const AboutAppWidget({super.key, this.onContinuePressed});
 
   @override
   Widget build(BuildContext context) {
@@ -38,22 +36,25 @@ class AboutAppWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Text(
+          const Text(
             'Join us to recycle smarter and keep the environment cleaner!',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey[700],
+              color: Colors.grey,
             ),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
-            onPressed: onContinuePressed,
+            onPressed: onContinuePressed ??
+                () {
+                  Navigator.pushNamed(context, '/role_selection');
+                },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
             ),
-            child: Text('Continue'),
+            child: const Text('Continue'),
           ),
         ],
       ),

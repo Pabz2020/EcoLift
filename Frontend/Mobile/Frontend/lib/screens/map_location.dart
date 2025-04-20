@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
+//import 'package:geolocator/geolocator.dart';
 import '../services/map_service.dart';
 
 class MapLocation extends StatefulWidget {
+  const MapLocation({super.key});
+
   @override
-  _MapLocationState createState() => _MapLocationState();
+  State<MapLocation> createState() => _MapLocationState();
 }
 
 class _MapLocationState extends State<MapLocation> {
@@ -33,8 +35,11 @@ class _MapLocationState extends State<MapLocation> {
       setState(() {
         _isLoading = false;
       });
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
+        SnackBar(
+            content: Text(e.toString(),
+                style: const TextStyle(color: Colors.white))),
       );
     }
   }
@@ -43,11 +48,11 @@ class _MapLocationState extends State<MapLocation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Location'),
+        title: const Text('Select Location'),
         backgroundColor: Colors.green,
         actions: [
           IconButton(
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
             onPressed: _selectedLocation != null
                 ? () {
                     Navigator.pop(
@@ -63,7 +68,7 @@ class _MapLocationState extends State<MapLocation> {
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: _selectedLocation!,

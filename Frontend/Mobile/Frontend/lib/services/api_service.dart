@@ -1,92 +1,104 @@
 import 'dart:convert';
+import 'dart:async';
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
 import '../models/customer.dart';
 
 class ApiService {
-  // Use your computer's IP address instead of localhost
-  static const String baseUrl =
-      'http://192.168.1.100:4000/api/users'; // User Service runs on port 4000
+  // Get the appropriate base URL depending on platform
+  static String get baseUrl {
+    if (kIsWeb) {
+      // For web platform
+      return 'http://localhost:4000/api/users';
+    } else if (Platform.isAndroid) {
+      // For Android emulator
+      return 'http://10.0.2.2:4000/api/users';
+    } else {
+      // For iOS simulator or physical devices
+      return 'http://localhost:4000/api/users';
+    }
+  }
 
   static Future<Map<String, dynamic>> registerCustomer(
       Customer customer) async {
     try {
-      print('Sending request to: $baseUrl/register'); // Debug print
-      print('Request body: ${jsonEncode({
-            'name': customer.name,
-            'email': customer.email,
-            'phone': customer.phone,
-            'addressNo': customer.address?.split(',')[0].trim(),
-            'street': customer.address?.split(',')[1].trim(),
-            'city': customer.city,
-            'district': customer.district,
-            'role': 'customer'
-          })}'); // Debug print
+      // Use the customer's toJson method to create the request body
+      final requestBody = customer.toJson();
 
-      final response = await http.post(
+      print('Attempting to register customer');
+      print('Request URL: $baseUrl/register');
+      print('Request body: ${jsonEncode(requestBody)}');
+
+      final response = await http
+          .post(
         Uri.parse('$baseUrl/register'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: jsonEncode({
-          'name': customer.name,
-          'email': customer.email,
-          'phone': customer.phone,
-          'addressNo': customer.address?.split(',')[0].trim(),
-          'street': customer.address?.split(',')[1].trim(),
-          'city': customer.city,
-          'district': customer.district,
-          'role': 'customer'
-        }),
+        body: jsonEncode(requestBody),
+      )
+          .timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw TimeoutException('Connection timed out. Please try again.');
+        },
       );
 
-      print('Response status: ${response.statusCode}'); // Debug print
-      print('Response body: ${response.body}'); // Debug print
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
-      final responseData = jsonDecode(response.body);
-
-      if (response.statusCode == 200) {
-        // Backend returns 200 for successful registration
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
         return {
           'success': true,
           'message': responseData['message'] ?? 'Registration successful',
-          'data':
-              responseData['user'], // Backend returns user data in 'user' field
-        };
-      } else if (response.statusCode == 400) {
-        return {
-          'success': false,
-          'message': responseData['error'] ??
-              'Invalid input data', // Backend returns errors in 'error' field
-        };
-      } else if (response.statusCode == 409) {
-        return {
-          'success': false,
-          'message': responseData['error'] ?? 'Email or phone already exists',
+          'data': responseData['user'] ?? responseData,
         };
       } else {
+        print('Server returned error status: ${response.statusCode}');
+        print('Error response body: ${response.body}');
+
+        String message;
+        try {
+          final responseData = jsonDecode(response.body);
+          message = responseData['message'] ??
+              responseData['error'] ??
+              'Server error occurred';
+        } catch (e) {
+          message = 'Server error occurred';
+        }
+
         return {
           'success': false,
-          'message': responseData['error'] ?? 'Registration failed',
+          'message': message,
         };
       }
-    } on http.ClientException catch (e) {
-      print('Network error: $e'); // Debug print
-      return {
-        'success': false,
-        'message':
-            'Network error: ${e.message}. Please check your connection and try again.',
-      };
     } catch (e) {
-      print('Unexpected error: $e'); // Debug print
+      print('Detailed error during registration: $e');
+      String errorMessage;
+
+      if (e is TimeoutException) {
+        errorMessage = 'Connection timed out. Please try again.';
+      } else if (e.toString().contains('XMLHttpRequest error')) {
+        errorMessage =
+            'CORS error: Please ensure the backend server has CORS enabled';
+      } else if (e.toString().contains('Connection refused')) {
+        errorMessage =
+            'Could not connect to the server. Please ensure the backend is running on port 4000';
+      } else {
+        errorMessage = 'Network error: ${e.toString()}';
+      }
+
+      print('Error message: $errorMessage');
       return {
         'success': false,
-        'message': 'An unexpected error occurred: $e',
+        'message': errorMessage,
       };
     }
   }
 
-  // Add other customer-related API methods here
   static Future<Map<String, dynamic>> loginCustomer(
       String email, String password) async {
     try {
@@ -107,30 +119,21 @@ class ApiService {
       if (response.statusCode == 200) {
         return {
           'success': true,
-          'message': responseData['message'] ?? 'Login successful',
+          'message': responseData['message'],
           'token': responseData['token'],
           'user': responseData['user'],
-        };
-      } else if (response.statusCode == 401) {
-        return {
-          'success': false,
-          'message': responseData['error'] ?? 'Invalid credentials',
         };
       } else {
         return {
           'success': false,
-          'message': responseData['error'] ?? 'Login failed',
+          'message': responseData['message'] ?? 'Login failed',
         };
       }
-    } on http.ClientException catch (e) {
-      return {
-        'success': false,
-        'message': 'Network error: ${e.message}',
-      };
     } catch (e) {
+      print('Error during login: $e');
       return {
         'success': false,
-        'message': 'An unexpected error occurred: $e',
+        'message': 'Network error: Failed to connect to server',
       };
     }
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CollectorWelcome extends StatelessWidget {
+  const CollectorWelcome({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +24,7 @@ class CollectorWelcome extends StatelessWidget {
                   'assets/images/ecolift_logo.png',
                   height: 200,
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Text(
                   'Welcome to EcoLift',
                   style: TextStyle(
@@ -30,8 +32,9 @@ class CollectorWelcome extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.green.shade900,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   'Join our network of waste collectors and help make Sri Lanka cleaner and greener. Register now to start your journey.',
                   textAlign: TextAlign.center,
@@ -40,21 +43,22 @@ class CollectorWelcome extends StatelessWidget {
                     color: Colors.grey.shade700,
                   ),
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/collector_personal_info');
                   },
-                  child: Text(
-                    'Get Started',
-                    style: TextStyle(fontSize: 18),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
+                  ),
+                  child: const Text(
+                    'Get Started',
+                    style: TextStyle(fontSize: 18),
                   ),
                 ),
               ],

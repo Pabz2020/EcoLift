@@ -4,7 +4,7 @@ class CollectorPersonalInfo extends StatefulWidget {
   const CollectorPersonalInfo({super.key});
 
   @override
-  _CollectorPersonalInfoState createState() => _CollectorPersonalInfoState();
+  State<CollectorPersonalInfo> createState() => _CollectorPersonalInfoState();
 }
 
 class _CollectorPersonalInfoState extends State<CollectorPersonalInfo> {
@@ -30,7 +30,7 @@ class _CollectorPersonalInfoState extends State<CollectorPersonalInfo> {
         title: const Text('Personal Information'),
         backgroundColor: Colors.green,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -130,7 +130,7 @@ class _CollectorPersonalInfoState extends State<CollectorPersonalInfo> {
                   backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                 ),
-                child: Text('Continue'),
+                child: const Text('Continue'),
               ),
             ],
           ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:eco_lift/services/api_service.dart';
+import 'package:eco_lift/models/customer.dart';
 
 class CustomerPassword extends StatefulWidget {
   final Map<String, dynamic> customerInfo;
@@ -6,7 +8,7 @@ class CustomerPassword extends StatefulWidget {
   const CustomerPassword({super.key, required this.customerInfo});
 
   @override
-  _CustomerPasswordState createState() => _CustomerPasswordState();
+  State<CustomerPassword> createState() => _CustomerPasswordState();
 }
 
 class _CustomerPasswordState extends State<CustomerPassword> {
@@ -15,6 +17,8 @@ class _CustomerPasswordState extends State<CustomerPassword> {
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _isLoading = false;
+  String? _errorMessage;
 
   bool _validatePassword(String password) {
     if (password.length < 8) return false;
@@ -29,6 +33,87 @@ class _CustomerPasswordState extends State<CustomerPassword> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+
+      try {
+        print('Customer Info received: ${widget.customerInfo}');
+
+        // Validate all required fields are present
+        if (!widget.customerInfo.containsKey('name') ||
+            !widget.customerInfo.containsKey('email') ||
+            !widget.customerInfo.containsKey('phone') ||
+            !widget.customerInfo.containsKey('addressNo') ||
+            !widget.customerInfo.containsKey('street') ||
+            !widget.customerInfo.containsKey('city') ||
+            !widget.customerInfo.containsKey('district')) {
+          throw Exception('Missing required customer information');
+        }
+
+        // Create customer object with all the information
+        final customer = Customer(
+          name: widget.customerInfo['name'].trim(),
+          email: widget.customerInfo['email'].trim(),
+          phone: widget.customerInfo['phone'].trim(),
+          addressNo: widget.customerInfo['addressNo'].trim(),
+          street: widget.customerInfo['street'].trim(),
+          city: widget.customerInfo['city'].trim(),
+          district: widget.customerInfo['district'].trim(),
+          password: _passwordController.text,
+        );
+
+        print('Attempting to register customer with data:');
+        print('Name: ${customer.name}');
+        print('Email: ${customer.email}');
+        print('Phone: ${customer.phone}');
+        print('Address No: ${customer.addressNo}');
+        print('Street: ${customer.street}');
+        print('City: ${customer.city}');
+        print('District: ${customer.district}');
+
+        // Call the API to register the customer
+        final response = await ApiService.registerCustomer(customer);
+
+        print('Registration response: $response');
+
+        if (!mounted) return;
+
+        if (response['success']) {
+          print('Registration successful, navigating to completion screen');
+
+          // Use the original customer object instead of creating a new one from response
+          Navigator.pushReplacementNamed(
+            context,
+            '/customer_registration_complete',
+            arguments: customer,
+          );
+        } else {
+          print('Registration failed with message: ${response['message']}');
+          setState(() {
+            _errorMessage = response['message'];
+          });
+        }
+      } catch (e) {
+        print('Error during registration: $e');
+        setState(() {
+          _errorMessage = e.toString().contains('Missing required')
+              ? 'Please fill in all required information'
+              : 'Registration failed. Please try again.';
+        });
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    }
   }
 
   @override
@@ -61,6 +146,20 @@ class _CustomerPasswordState extends State<CustomerPassword> {
                 ),
               ),
               const SizedBox(height: 30),
+              if (_errorMessage != null)
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.red.shade200),
+                  ),
+                  child: Text(
+                    _errorMessage!,
+                    style: TextStyle(color: Colors.red.shade900),
+                  ),
+                ),
               TextFormField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
@@ -72,6 +171,7 @@ class _CustomerPasswordState extends State<CustomerPassword> {
                       _obscurePassword
                           ? Icons.visibility_off
                           : Icons.visibility,
+                      color: Colors.grey,
                     ),
                     onPressed: () {
                       setState(() {
@@ -102,6 +202,7 @@ class _CustomerPasswordState extends State<CustomerPassword> {
                       _obscureConfirmPassword
                           ? Icons.visibility_off
                           : Icons.visibility,
+                      color: Colors.grey,
                     ),
                     onPressed: () {
                       setState(() {
@@ -134,23 +235,22 @@ class _CustomerPasswordState extends State<CustomerPassword> {
               const Text('• At least one special character'),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Navigator.pushNamed(
-                      context,
-                      '/customer_registration_complete',
-                      arguments: {
-                        ...widget.customerInfo,
-                        'password': _passwordController.text,
-                      },
-                    );
-                  }
-                },
+                onPressed: _isLoading ? null : _submitForm,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                 ),
-                child: const Text('Complete Registration'),
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      )
+                    : const Text('Complete Registration'),
               ),
             ],
           ),

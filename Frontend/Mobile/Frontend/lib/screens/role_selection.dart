@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class RoleSelection extends StatelessWidget {
+  const RoleSelection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Role'),
+        title: const Text('Select Role'),
         backgroundColor: Colors.green,
       ),
       body: Container(
@@ -31,7 +33,7 @@ class RoleSelection extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 _buildRoleCard(
                   context,
                   'Customer',
@@ -39,7 +41,7 @@ class RoleSelection extends StatelessWidget {
                   Icons.person,
                   '/customer_welcome',
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _buildRoleCard(
                   context,
                   'Collector',
@@ -77,7 +79,7 @@ class RoleSelection extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.green.shade50,
                   borderRadius: BorderRadius.circular(10),
@@ -88,19 +90,19 @@ class RoleSelection extends StatelessWidget {
                   color: Colors.green,
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       subtitle,
                       style: TextStyle(
@@ -114,6 +116,7 @@ class RoleSelection extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.grey.shade400,
+                size: 20,
               ),
             ],
           ),

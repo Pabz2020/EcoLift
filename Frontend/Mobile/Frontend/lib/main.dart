@@ -1,6 +1,5 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'screens/welcome_page.dart';
 import 'screens/about_app.dart';
@@ -77,20 +76,9 @@ class EcoLiftApp extends StatelessWidget {
           return CustomerPassword(customerInfo: args ?? {});
         },
         '/customer_registration_complete': (context) {
-          final args = ModalRoute.of(context)?.settings.arguments
-              as Map<String, dynamic>?;
-          return CustomerRegistrationComplete(
-            customer: Customer(
-              name: args?['name'] ?? '',
-              email: args?['email'] ?? '',
-              phone: args?['phone'] ?? '',
-              address: args?['address'],
-              city: args?['city'],
-              district: args?['district'],
-              postalCode: args?['postalCode'],
-              password: args?['password'],
-            ),
-          );
+          final customer =
+              ModalRoute.of(context)?.settings.arguments as Customer;
+          return CustomerRegistrationComplete(customer: customer);
         },
         '/map_location': (context) => MapLocation(),
         '/collector_welcome': (context) => CollectorWelcome(),
@@ -121,15 +109,17 @@ class EcoLiftApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, '/welcome');
     });
   }
@@ -153,7 +143,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 'assets/images/ecolift_logo.png',
                 height: 200,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 'EcoLift',
                 style: TextStyle(
@@ -162,7 +152,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   color: Colors.green.shade900,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'Making Sri Lanka Cleaner and Greener',
                 style: TextStyle(

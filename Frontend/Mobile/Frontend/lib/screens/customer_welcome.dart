@@ -32,6 +32,7 @@ class CustomerWelcome extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.green.shade900,
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -49,12 +50,13 @@ class CustomerWelcome extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Get Started',
                     style: TextStyle(fontSize: 18),
                   ),

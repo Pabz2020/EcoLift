@@ -79,38 +79,45 @@ class _CustomerAddressState extends State<CustomerAddress> {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      // Additional validation for district
+      if (_selectedDistrict == null || _selectedDistrict!.isEmpty) {
+        setState(() {
+          _errorMessage = 'Please select your district';
+        });
+        return;
+      }
+
       setState(() {
         _isLoading = true;
         _errorMessage = null;
       });
 
       try {
-        final customer = widget.customer.copyWith(
-          address: '${_addressNoController.text}, ${_streetController.text}',
-          city: _cityController.text,
-          district: _selectedDistrict,
-        );
-
-        final response = await ApiService.registerCustomer(customer);
-
-        if (response['success']) {
-          if (!mounted) return;
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CustomerRegistrationComplete(
-                customer: customer,
-              ),
-            ),
-          );
-        } else {
+        // Validate all address fields are filled
+        if (_addressNoController.text.isEmpty ||
+            _streetController.text.isEmpty ||
+            _cityController.text.isEmpty ||
+            _selectedDistrict == null) {
           setState(() {
-            _errorMessage = response['message'];
-            if (response['errors'] != null) {
-              _errorMessage = response['errors'].values.first[0];
-            }
+            _errorMessage = 'All address fields are required';
           });
+          return;
         }
+
+        // Pass address components separately
+        Navigator.pushNamed(
+          context,
+          '/customer_password',
+          arguments: {
+            'name': widget.customer.name,
+            'email': widget.customer.email,
+            'phone': widget.customer.phone,
+            'addressNo': _addressNoController.text.trim(),
+            'street': _streetController.text.trim(),
+            'city': _cityController.text.trim(),
+            'district': _selectedDistrict,
+          },
+        );
       } catch (e) {
         setState(() {
           _errorMessage = 'An error occurred. Please try again.';
