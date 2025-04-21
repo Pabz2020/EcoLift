@@ -99,10 +99,11 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> loginCustomer(
-      String email, String password) async {
+  static Future<Map<String, dynamic>> login(
+      String email, String password, String role) async {
     try {
-      final response = await http.post(
+      final response = await http
+          .post(
         Uri.parse('$baseUrl/login'),
         headers: {
           'Content-Type': 'application/json',
@@ -111,8 +112,18 @@ class ApiService {
         body: jsonEncode({
           'email': email,
           'password': password,
+          'role': role,
         }),
+      )
+          .timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw TimeoutException('Connection timed out. Please try again.');
+        },
       );
+
+      print('Login response status: ${response.statusCode}');
+      print('Login response body: ${response.body}');
 
       final responseData = jsonDecode(response.body);
 
@@ -131,10 +142,36 @@ class ApiService {
       }
     } catch (e) {
       print('Error during login: $e');
+      String errorMessage;
+
+      if (e is TimeoutException) {
+        errorMessage = 'Connection timed out. Please try again.';
+      } else if (e.toString().contains('XMLHttpRequest error')) {
+        errorMessage =
+            'CORS error: Please ensure the backend server has CORS enabled';
+      } else if (e.toString().contains('Connection refused')) {
+        errorMessage =
+            'Could not connect to the server. Please ensure the backend is running on port 4000';
+      } else {
+        errorMessage = 'Network error: Failed to connect to server';
+      }
+
       return {
         'success': false,
-        'message': 'Network error: Failed to connect to server',
+        'message': errorMessage,
       };
     }
+  }
+
+  // Deprecated: Use login() instead
+  static Future<Map<String, dynamic>> loginCustomer(
+      String email, String password) async {
+    return login(email, password, 'customer');
+  }
+
+  // Helper method for collector login
+  static Future<Map<String, dynamic>> loginCollector(
+      String email, String password) async {
+    return login(email, password, 'collector');
   }
 }

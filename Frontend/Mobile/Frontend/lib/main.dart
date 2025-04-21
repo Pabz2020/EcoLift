@@ -16,6 +16,13 @@ import 'screens/collector_registration_complete.dart';
 import 'screens/customer_welcome.dart';
 import 'screens/customer_registration_complete.dart';
 import 'screens/collector_welcome.dart';
+import 'screens/login_role_selection.dart';
+import 'screens/login_screen.dart';
+import 'screens/customer_dashboard.dart';
+import 'screens/instant_pickup/waste_type_selection.dart';
+import 'screens/instant_pickup/location_selection.dart';
+import 'screens/scheduled_pickup/waste_type_selection.dart';
+import 'screens/scheduled_pickup/datetime_selection.dart';
 import 'models/customer.dart';
 
 void main() async {
@@ -56,9 +63,39 @@ class EcoLiftApp extends StatelessWidget {
       routes: {
         '/welcome': (context) => const WelcomePage(),
         '/about_app': (context) => const AboutApp(),
-        '/role_selection': (context) => RoleSelection(),
+        '/role_selection': (context) => const RoleSelection(),
+        '/login_role_selection': (context) => const LoginRoleSelection(),
+        '/login': (context) => const LoginScreen(),
+        '/customer_dashboard': (context) => const CustomerDashboard(),
         '/customer_welcome': (context) => const CustomerWelcome(),
         '/customer_personal_info': (context) => CustomerPersonalInfo(),
+        '/instant_pickup': (context) => const WasteTypeSelection(),
+        '/instant_pickup_location': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return LocationSelection(
+            selectedWasteTypes:
+                args?['selectedWasteTypes'] as List<String>? ?? [],
+          );
+        },
+        '/scheduled_pickup': (context) => const ScheduledWasteTypeSelection(),
+        '/scheduled_pickup_datetime': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return DateTimeSelection(
+            selectedWasteTypes:
+                args?['selectedWasteTypes'] as List<String>? ?? [],
+          );
+        },
+        '/scheduled_pickup_location': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return LocationSelection(
+            selectedWasteTypes:
+                args?['selectedWasteTypes'] as List<String>? ?? [],
+            scheduledDateTime: args?['scheduledDateTime'] as DateTime?,
+          );
+        },
         '/customer_address': (context) {
           final args = ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>?;

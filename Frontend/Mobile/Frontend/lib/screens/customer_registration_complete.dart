@@ -58,7 +58,7 @@ class CustomerRegistrationComplete extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
-                  '/login',
+                  '/login_role_selection',
                   (route) => false,
                 );
               },
