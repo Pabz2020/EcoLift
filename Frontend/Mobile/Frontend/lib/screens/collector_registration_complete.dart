@@ -8,6 +8,10 @@ class CollectorRegistrationComplete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Registration Complete'),
+        backgroundColor: Colors.green,
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -29,7 +33,16 @@ class CollectorRegistrationComplete extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'Thank you for joining EcoLift as a collector.',
+                'Welcome ${collectorInfo['name']}!',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Thank you for joining EcoLift as a collector. You can now log in to your account.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -39,14 +52,24 @@ class CollectorRegistrationComplete extends StatelessWidget {
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, '/collector_dashboard');
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/login_role_selection',
+                    (route) => false,
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 ),
-                child: Text('Go to Dashboard'),
+                child: const Text(
+                  'Go to Login',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ],
           ),
