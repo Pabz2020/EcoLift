@@ -1,0 +1,112 @@
+.homeButton {
+    background-color: #007f4f;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 1s ease; /* Add transition */
+  }
+  
+  .homeButton:hover {
+    background-color: #ffffff;
+    color: #007f4f; /* Darker green on hover */
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    transform: scale(1.05); /* Slight zoom effect on hover */
+  }
+
+  /* footer.css */
+
+/* footer.css */
+
+.footer {
+  background-color: #2d2d2d;
+  color: #ffffff;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 30px;
+  font-family: 'Arial', sans-serif;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-section h4 {
+  font-size: 18px;
+  color: #f2f2f2;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 5px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #cccccc;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li:hover {
+  color: #f2f2f2;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 14px;
+  color: #cccccc;
+  margin-bottom: 10px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+  color: #4caf50;
+}
+
+.social-icons1 {
+  display: flex;
+  gap: 10px;
+}
+
+.social-icons1 a {
+  color: #cccccc;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.social-icons1 a:hover {
+  color: #4caf50;
+}
+
+.footer-bottom {
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #444444;
+  font-size: 14px;
+  color: #999999;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-section {
+    max-width: 100%;
+  }
+}
