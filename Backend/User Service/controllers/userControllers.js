@@ -4,17 +4,7 @@ const bcrypt = require('bcrypt'); // For hashing passwords
 
 
 const register = async (req, res) => {
-    const { 
-        name, 
-        phone, 
-        email, 
-        password, 
-        role, 
-        address, 
-        location,
-        vehicleType,
-        wasteTypes
-    } = req.body;
+    const { name, phone, email, password, role, address, location } = req.body;
 
     try {
         // Validate role
@@ -32,16 +22,8 @@ const register = async (req, res) => {
         if (role === 'customer' && !address) {
             return res.status(400).json({ message: 'Address is required for customers' });
         }
-        if (role === 'collector') {
-            if (!location?.coordinates) {
-                return res.status(400).json({ message: 'Location coordinates are required for collectors' });
-            }
-           // if (!vehicleType) {
-            //    return res.status(400).json({ message: 'Vehicle type is required for collectors' });
-            //}
-           // if (!wasteTypes || wasteTypes.length === 0) {
-            //    return res.status(400).json({ message: 'At least one waste type must be selected' });
-            //}
+        if (role === 'collector' && !location?.coordinates) {
+            return res.status(400).json({ message: 'Location coordinates are required for collectors' });
         }
 
         // Hash password
@@ -55,18 +37,7 @@ const register = async (req, res) => {
             email,
             password: hashedPassword,
             role,
-            ...(role === 'customer' 
-                ? { 
-                    address,
-                    location: { type: 'Point', coordinates: [0.0, 0.0] },
-                    wasteTypes: []
-                  } 
-                : { 
-                    location,
-                    vehicleType,
-                    wasteTypes
-                  }
-            )
+            ...(role === 'customer' ? { address } : { location })
         };
 
         const user = await User.create(userData);
@@ -76,20 +47,11 @@ const register = async (req, res) => {
             user: {
                 id: user._id,
                 email: user.email,
-                role: user.role,
-                name: user.name,
-                ...(role === 'collector' ? {
-                    vehicleType: user.vehicleType,
-                    wasteTypes: user.wasteTypes
-                } : {})
+                role: user.role
             }
         });
     } catch (error) {
-        console.error('Registration error:', error);
-        res.status(500).json({ 
-            message: 'Server error', 
-            error: error.message 
-        });
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 
