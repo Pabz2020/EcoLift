@@ -34,6 +34,7 @@ const userSchema = new schema({
         type: {
             type: String,
             enum: ['Point'],
+            default: 'Point'
         },
         coordinates: {
             type: [Number],
@@ -45,6 +46,24 @@ const userSchema = new schema({
                 },
                 message: 'Invalid coordinates format [longitude, latitude]'
             }
+        }
+    },
+    vehicleType: {
+        type: String,
+        required: function() {
+            return this.role === 'collector';
+        }
+    },
+    wasteTypes: {
+        type: [String],
+        required: function() {
+            return this.role === 'collector';
+        },
+        validate: {
+            validator: function(v) {
+                return this.role !== 'collector' || (v && v.length > 0);
+            },
+            message: 'At least one waste type must be selected for collectors'
         }
     }
 }, { timestamps: true });

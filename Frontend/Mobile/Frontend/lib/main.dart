@@ -1,6 +1,7 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'screens/welcome_page.dart';
 import 'screens/about_app.dart';
 import 'screens/role_selection.dart';
@@ -21,6 +22,7 @@ import 'screens/login_screen.dart';
 import 'screens/customer_dashboard.dart';
 import 'screens/instant_pickup/waste_type_selection.dart';
 import 'screens/instant_pickup/location_selection.dart';
+import 'screens/instant_pickup/pickup_confirmation.dart';
 import 'screens/scheduled_pickup/waste_type_selection.dart';
 import 'screens/scheduled_pickup/datetime_selection.dart';
 import 'models/customer.dart';
@@ -76,6 +78,17 @@ class EcoLiftApp extends StatelessWidget {
           return LocationSelection(
             selectedWasteTypes:
                 args?['selectedWasteTypes'] as List<String>? ?? [],
+          );
+        },
+        '/instant_pickup_confirmation': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return PickupConfirmation(
+            selectedWasteTypes:
+                args?['selectedWasteTypes'] as List<String>? ?? [],
+            location: args?['location'] as LatLng? ?? const LatLng(0, 0),
+            address: args?['address'] as String? ?? '',
+            scheduledDateTime: args?['scheduledDateTime'] as DateTime?,
           );
         },
         '/scheduled_pickup': (context) => const ScheduledWasteTypeSelection(),

@@ -32,6 +32,11 @@ class Customer {
         'city': city,
         'district': district,
       },
+      'location': {
+        'type': 'Point',
+        'coordinates': [0.0, 0.0] // Default coordinates
+      },
+      'wasteTypes': [] // Empty array for customers
     };
   }
 

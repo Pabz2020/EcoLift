@@ -20,11 +20,46 @@ class ApiService {
     }
   }
 
+  // Check if a phone number is already registered
+  static Future<bool> isPhoneNumberRegistered(String phone) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/customers/check-phone/$phone'),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['isRegistered'] ?? false;
+      } else if (response.statusCode == 404) {
+        return false; // Phone number not found
+      } else {
+        throw Exception('Failed to check phone number');
+      }
+    } catch (e) {
+      throw Exception('Error checking phone number: $e');
+    }
+  }
+
   static Future<Map<String, dynamic>> registerCustomer(
       Customer customer) async {
     try {
-      // Use the customer's toJson method to create the request body
-      final requestBody = customer.toJson();
+      // Create a copy of the customer data
+      final Map<String, dynamic> requestBody = customer.toJson();
+
+      // Remove any existing location field to avoid conflicts
+      requestBody.remove('location');
+
+      // Add properly formatted location field
+      requestBody['location'] = {
+        'type': 'Point',
+        'coordinates': [0.0, 0.0]
+      };
+
+      // Ensure wasteTypes is an empty array for customers
+      requestBody['wasteTypes'] = [];
+
+      // Add role field for customer
+      requestBody['role'] = 'customer';
 
       print('Attempting to register customer');
       print('Request URL: $baseUrl/register');
