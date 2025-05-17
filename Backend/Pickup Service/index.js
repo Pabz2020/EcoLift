@@ -27,11 +27,15 @@ const server = http.createServer(app);
 setupWebSocket(server);
 
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
+    .then(async () => {
         console.log('✅ Connected to MongoDB');
         // Connect to Redis
-        connectRedis();
-        
+        try {
+            await connectRedis();
+            console.log('✅ Connected to Redis');
+        } catch (err) {
+            console.error('❌ Redis connection error:', err);
+        }
         const port = process.env.PORT || 5000;
         server.listen(port, () => {
             console.log(`✅ Pickup Service running on port ${port}`);
