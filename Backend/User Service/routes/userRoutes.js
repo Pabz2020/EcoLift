@@ -3,7 +3,8 @@ const {
     register, 
     login,
     updateCollectorLocation,
-    getNearbyCollectors 
+    getNearbyCollectors,
+    getNearbyActiveCollectors
 } = require('../controllers/userControllers');
 const authenticate = require('../middlewares/authMiddleware');
 
@@ -21,5 +22,6 @@ router.get('/profile', authenticate, (req, res) => {
 // Collector routes
 router.patch('/collectors/location', authenticate, updateCollectorLocation);
 router.get('/collectors/nearby', authenticate, getNearbyCollectors);
+router.get('/collectors/active-nearby', authenticate, getNearbyActiveCollectors);
 
 module.exports = router;

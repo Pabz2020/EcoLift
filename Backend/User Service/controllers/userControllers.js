@@ -1,10 +1,22 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt'); // For hashing passwords
+const redisService = require('../services/redisService');
 
 
 const register = async (req, res) => {
-    const { name, phone, email, password, role, address, location } = req.body;
+    const { 
+        name, 
+        phone, 
+        email, 
+        password, 
+        role, 
+        address, 
+        location, 
+        nicNumber, 
+        vehicleInfo, 
+        wasteTypes 
+    } = req.body;
 
     try {
         // Validate role
@@ -22,23 +34,50 @@ const register = async (req, res) => {
         if (role === 'customer' && !address) {
             return res.status(400).json({ message: 'Address is required for customers' });
         }
-        if (role === 'collector' && !location?.coordinates) {
-            return res.status(400).json({ message: 'Location coordinates are required for collectors' });
+        
+        // Validate collector-specific fields
+        if (role === 'collector') {
+            if (!nicNumber) {
+                return res.status(400).json({ message: 'NIC number is required for collectors' });
+            }
+            if (!vehicleInfo?.type || !vehicleInfo?.number || !vehicleInfo?.capacity) {
+                return res.status(400).json({ 
+                    message: 'Vehicle information (type, number, and capacity) is required for collectors' 
+                });
+            }
+            if (!wasteTypes || !Array.isArray(wasteTypes) || wasteTypes.length === 0) {
+                return res.status(400).json({ 
+                    message: 'At least one waste type must be specified for collectors' 
+                });
+            }
         }
 
         // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Create user with role-specific data
+        // Create base user data
         const userData = {
             name,
             phone,
             email,
             password: hashedPassword,
-            role,
-            ...(role === 'customer' ? { address } : { location })
+            role
         };
+
+        // Add role-specific data
+        if (role === 'customer') {
+            userData.address = address;
+        } else if (role === 'collector') {
+            userData.nicNumber = nicNumber;
+            userData.vehicleInfo = vehicleInfo;
+            userData.wasteTypes = wasteTypes;
+        }
+
+        // Add location if provided
+        if (location) {
+            userData.location = location;
+        }
 
         const user = await User.create(userData);
 
@@ -46,6 +85,7 @@ const register = async (req, res) => {
             message: 'User registered successfully',
             user: {
                 id: user._id,
+                name: user.name,
                 email: user.email,
                 role: user.role
             }
@@ -88,6 +128,9 @@ const login = async (req, res) => {
             responseData.address = user.address;
         } else {
             responseData.location = user.location;
+            responseData.nicNumber = user.nicNumber;
+            responseData.vehicleInfo = user.vehicleInfo;
+            responseData.wasteTypes = user.wasteTypes;
         }
 
         res.json({
@@ -106,15 +149,30 @@ const updateCollectorLocation = async (req, res) => {
             return res.status(403).json({ message: 'Only collectors can update locations' });
         }
 
+        const coordinates = req.body.coordinates;
+        if (!coordinates || !Array.isArray(coordinates) || coordinates.length !== 2) {
+            return res.status(400).json({ message: 'Invalid coordinates format. Expected [longitude, latitude]' });
+        }
+
+        const [longitude, latitude] = coordinates;
+        
+        // Update location in MongoDB
         const user = await User.findByIdAndUpdate(
-            req.user.id,
+            req.user.userId,
             { 
                 location: {
                     type: 'Point',
-                    coordinates: req.body.coordinates
+                    coordinates
                 }
             },
             { new: true, runValidators: true }
+        );
+
+        // Also update location in Redis for real-time tracking
+        await redisService.updateCollectorLocation(
+            req.user.userId,
+            longitude,
+            latitude
         );
         
         res.status(200).json({
@@ -157,7 +215,57 @@ const getNearbyCollectors = async (req, res) => {
     }
 };
 
+const getNearbyActiveCollectors = async (req, res) => {
+    try {
+        const coordinates = req.query.coordinates.map(Number);
+        const [longitude, latitude] = coordinates;
+        const radius = parseFloat(req.query.radius) || 5; // Default 5 km
+        
+        // Get collector IDs from Redis
+        const collectorIds = await redisService.findNearbyCollectors(
+            longitude,
+            latitude,
+            radius
+        );
+        
+        if (!collectorIds.length) {
+            return res.status(200).json({
+                message: 'No active collectors found nearby',
+                collectors: []
+            });
+        }
+        
+        // Get full collector data from MongoDB using the IDs from Redis
+        const collectors = await User.find({
+            _id: { $in: collectorIds },
+            role: 'collector'
+        }).select('-password -__v');
+        
+        // Add real-time location from Redis
+        const collectorsWithLocation = await Promise.all(
+            collectors.map(async (collector) => {
+                const redisLocation = await redisService.getCollectorLocation(collector._id.toString());
+                return {
+                    ...collector.toObject(),
+                    currentLocation: redisLocation
+                };
+            })
+        );
+        
+        res.status(200).json({
+            message: 'Nearby active collectors found',
+            count: collectorsWithLocation.length,
+            collectors: collectorsWithLocation
+        });
+    } catch (error) {
+        res.status(400).json({ message: 'Error finding active collectors', error: error.message });
+    }
+};
 
-
-
-module.exports = { register, login, updateCollectorLocation, getNearbyCollectors };
+module.exports = { 
+    register, 
+    login, 
+    updateCollectorLocation, 
+    getNearbyCollectors,
+    getNearbyActiveCollectors
+};
