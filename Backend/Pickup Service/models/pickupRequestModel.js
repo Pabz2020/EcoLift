@@ -26,13 +26,22 @@ const pickupRequestSchema = new mongoose.Schema({
         }
     },
     items: { 
-        type: [String], 
+        type: [
+            {
+                type: { type: String, required: true },
+                quantity: { type: Number, required: true },
+                description: { type: String }
+            }
+        ], 
         required: true,
         validate: {
             validator: function(v) {
-                return v.length > 0 && v.every(item => item.trim() !== '');
+                return v.length > 0 && v.every(item => 
+                    typeof item.type === 'string' && item.type.trim() !== '' &&
+                    typeof item.quantity === 'number'
+                );
             },
-            message: 'At least one valid item is required'
+            message: 'Each item must have a nonempty type and a valid quantity, and at least one item is required'
         }
     },
     scheduledTime: { 
