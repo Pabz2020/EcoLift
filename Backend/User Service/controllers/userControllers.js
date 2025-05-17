@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt'); // For hashing passwords
+const redisService = require('../services/redisService');
 
 
 const register = async (req, res) => {
@@ -148,15 +149,30 @@ const updateCollectorLocation = async (req, res) => {
             return res.status(403).json({ message: 'Only collectors can update locations' });
         }
 
+        const coordinates = req.body.coordinates;
+        if (!coordinates || !Array.isArray(coordinates) || coordinates.length !== 2) {
+            return res.status(400).json({ message: 'Invalid coordinates format. Expected [longitude, latitude]' });
+        }
+
+        const [longitude, latitude] = coordinates;
+        
+        // Update location in MongoDB
         const user = await User.findByIdAndUpdate(
-            req.user.id,
+            req.user.userId,
             { 
                 location: {
                     type: 'Point',
-                    coordinates: req.body.coordinates
+                    coordinates
                 }
             },
             { new: true, runValidators: true }
+        );
+
+        // Also update location in Redis for real-time tracking
+        await redisService.updateCollectorLocation(
+            req.user.userId,
+            longitude,
+            latitude
         );
         
         res.status(200).json({
@@ -199,7 +215,57 @@ const getNearbyCollectors = async (req, res) => {
     }
 };
 
+const getNearbyActiveCollectors = async (req, res) => {
+    try {
+        const coordinates = req.query.coordinates.map(Number);
+        const [longitude, latitude] = coordinates;
+        const radius = parseFloat(req.query.radius) || 5; // Default 5 km
+        
+        // Get collector IDs from Redis
+        const collectorIds = await redisService.findNearbyCollectors(
+            longitude,
+            latitude,
+            radius
+        );
+        
+        if (!collectorIds.length) {
+            return res.status(200).json({
+                message: 'No active collectors found nearby',
+                collectors: []
+            });
+        }
+        
+        // Get full collector data from MongoDB using the IDs from Redis
+        const collectors = await User.find({
+            _id: { $in: collectorIds },
+            role: 'collector'
+        }).select('-password -__v');
+        
+        // Add real-time location from Redis
+        const collectorsWithLocation = await Promise.all(
+            collectors.map(async (collector) => {
+                const redisLocation = await redisService.getCollectorLocation(collector._id.toString());
+                return {
+                    ...collector.toObject(),
+                    currentLocation: redisLocation
+                };
+            })
+        );
+        
+        res.status(200).json({
+            message: 'Nearby active collectors found',
+            count: collectorsWithLocation.length,
+            collectors: collectorsWithLocation
+        });
+    } catch (error) {
+        res.status(400).json({ message: 'Error finding active collectors', error: error.message });
+    }
+};
 
-
-
-module.exports = { register, login, updateCollectorLocation, getNearbyCollectors };
+module.exports = { 
+    register, 
+    login, 
+    updateCollectorLocation, 
+    getNearbyCollectors,
+    getNearbyActiveCollectors
+};

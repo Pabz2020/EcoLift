@@ -1,6 +1,7 @@
 const { getIO } = require('../websocket');
 const PickupRequest = require('../models/pickupRequestModel');
 const axios = require('axios');
+const { findNearbyActiveCollectors } = require('../services/redisService');
 
 const createPickupRequest = async (req, res) => {
     try {
@@ -18,23 +19,47 @@ const createPickupRequest = async (req, res) => {
         const pickup = await PickupRequest.create(pickupData);
 
         if (isInstant) {
-            const { data } = await axios.get(`${process.env.USER_SERVICE_URL}/api/users/collectors/nearby`, {
-                params: {
-                    coordinates: req.body.location.coordinates,
-                    maxDistance: 5000
-                },
-                headers: {
-                    Authorization: req.header('Authorization')
+            // Get coordinates from the request
+            const coordinates = req.body.location.coordinates;
+            const [longitude, latitude] = coordinates;
+            
+            // Find active collectors using Redis (faster, real-time)
+            const activeCollectorIds = await findNearbyActiveCollectors(longitude, latitude, 5);
+            
+            if (activeCollectorIds.length > 0) {
+                // If we found active collectors in Redis, notify them directly
+                const io = getIO();
+                io.notifyCollectors({
+                    type: 'NEW_INSTANT_REQUEST',
+                    request: pickup.toJSON()
+                }, activeCollectorIds);
+                
+                console.log(`Notified ${activeCollectorIds.length} active collectors about pickup request`);
+            } else {
+                // Fallback: If no active collectors in Redis, use the User Service API
+                console.log('No active collectors found in Redis, falling back to User Service API');
+                try {
+                    const { data } = await axios.get(`${process.env.USER_SERVICE_URL}/api/users/collectors/nearby`, {
+                        params: {
+                            coordinates,
+                            maxDistance: 5000
+                        },
+                        headers: {
+                            Authorization: req.header('Authorization')
+                        }
+                    });
+
+                    const io = getIO();
+                    const collectorIds = data.collectors.map(c => c._id.toString());
+
+                    io.notifyCollectors({
+                        type: 'NEW_INSTANT_REQUEST',
+                        request: pickup.toJSON()
+                    }, collectorIds);
+                } catch (apiError) {
+                    console.error('Error calling User Service API:', apiError.message);
                 }
-            });
-
-            const io = getIO();
-            const collectorIds = data.collectors.map(c => c._id.toString());
-
-            io.notifyCollectors({
-                type: 'NEW_INSTANT_REQUEST',
-                request: pickup.toJSON()
-            }, collectorIds);
+            }
         }
 
         res.status(201).json({ message: 'Pickup request created', pickup });

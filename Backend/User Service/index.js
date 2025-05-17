@@ -1,9 +1,11 @@
 require('dotenv').config() // Load the dotenv library to read the .env file
 const express = require('express'); // Import express library
 const mongoose = require('mongoose'); // Import mongoose library
+const cors = require('cors'); // Import CORS library
+const { connectRedis } = require('./services/redisService');
+
 const app = express(); // Create a new express application
 const userRoutes = require('./routes/userRoutes'); // Import routes
-const cors = require('cors'); // Import CORS library
 
 app.use(cors()); // Use CORS to allow requests from different origins
 
@@ -19,20 +21,21 @@ app.use((req,res,next)=>{
 
 app.use('/api/users', userRoutes);
 
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
-.then(()=>{
+    .then(() => {
+        console.log('Connected to MongoDB');
+        // Connect to Redis after MongoDB connection is established
+        connectRedis();
 
-    const port = process.env.PORT 
+        const port = process.env.PORT 
 
-    // Define a route for the root of the app
-    app.listen(port, () => {
-        console.log(`User Service running on port ${port} and connected to user database successfully!`)
+        // Define a route for the root of the app
+        app.listen(port, () => {
+            console.log(`User Service running on port ${port} and connected to user database successfully!`)
+        })
     })
-})
-.catch((err)=>{
-    
-    console.log(err)
-})
+    .catch(err => console.error('MongoDB connection error:', err));
 
 
 
