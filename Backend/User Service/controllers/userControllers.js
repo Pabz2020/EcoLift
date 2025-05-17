@@ -4,7 +4,18 @@ const bcrypt = require('bcrypt'); // For hashing passwords
 
 
 const register = async (req, res) => {
-    const { name, phone, email, password, role, address, location } = req.body;
+    const { 
+        name, 
+        phone, 
+        email, 
+        password, 
+        role, 
+        address, 
+        location, 
+        nicNumber, 
+        vehicleInfo, 
+        wasteTypes 
+    } = req.body;
 
     try {
         // Validate role
@@ -22,23 +33,50 @@ const register = async (req, res) => {
         if (role === 'customer' && !address) {
             return res.status(400).json({ message: 'Address is required for customers' });
         }
-        if (role === 'collector' && !location?.coordinates) {
-            return res.status(400).json({ message: 'Location coordinates are required for collectors' });
+        
+        // Validate collector-specific fields
+        if (role === 'collector') {
+            if (!nicNumber) {
+                return res.status(400).json({ message: 'NIC number is required for collectors' });
+            }
+            if (!vehicleInfo?.type || !vehicleInfo?.number || !vehicleInfo?.capacity) {
+                return res.status(400).json({ 
+                    message: 'Vehicle information (type, number, and capacity) is required for collectors' 
+                });
+            }
+            if (!wasteTypes || !Array.isArray(wasteTypes) || wasteTypes.length === 0) {
+                return res.status(400).json({ 
+                    message: 'At least one waste type must be specified for collectors' 
+                });
+            }
         }
 
         // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Create user with role-specific data
+        // Create base user data
         const userData = {
             name,
             phone,
             email,
             password: hashedPassword,
-            role,
-            ...(role === 'customer' ? { address } : { location })
+            role
         };
+
+        // Add role-specific data
+        if (role === 'customer') {
+            userData.address = address;
+        } else if (role === 'collector') {
+            userData.nicNumber = nicNumber;
+            userData.vehicleInfo = vehicleInfo;
+            userData.wasteTypes = wasteTypes;
+        }
+
+        // Add location if provided
+        if (location) {
+            userData.location = location;
+        }
 
         const user = await User.create(userData);
 
@@ -46,6 +84,7 @@ const register = async (req, res) => {
             message: 'User registered successfully',
             user: {
                 id: user._id,
+                name: user.name,
                 email: user.email,
                 role: user.role
             }
@@ -88,6 +127,9 @@ const login = async (req, res) => {
             responseData.address = user.address;
         } else {
             responseData.location = user.location;
+            responseData.nicNumber = user.nicNumber;
+            responseData.vehicleInfo = user.vehicleInfo;
+            responseData.wasteTypes = user.wasteTypes;
         }
 
         res.json({
