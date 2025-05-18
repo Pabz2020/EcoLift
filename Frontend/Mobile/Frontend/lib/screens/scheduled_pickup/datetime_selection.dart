@@ -25,7 +25,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
+            colorScheme: const ColorScheme.light(
               primary: Colors.green,
               onPrimary: Colors.white,
               onSurface: Colors.black,
@@ -49,7 +49,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
+            colorScheme: const ColorScheme.light(
               primary: Colors.green,
               onPrimary: Colors.white,
               onSurface: Colors.black,

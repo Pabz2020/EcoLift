@@ -91,7 +91,7 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes> {
                 backgroundColor: Colors.green,
                 padding: const EdgeInsets.symmetric(vertical: 15),
               ),
-              child: Text('Continue'),
+              child: const Text('Continue'),
             ),
           ],
         ),

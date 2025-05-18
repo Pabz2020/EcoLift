@@ -154,7 +154,7 @@ class _CollectorPasswordState extends State<CollectorPassword> {
                   backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                 ),
-                child: Text('Complete Registration'),
+                child: const Text('Complete Registration'),
               ),
             ],
           ),

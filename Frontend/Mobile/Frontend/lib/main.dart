@@ -1,5 +1,7 @@
 // lib/main.dart
+//import 'package:flutter/foundation.dart'; // For kIsWeb
 import 'package:flutter/material.dart';
+//import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:geolocator/geolocator.dart';
 import 'screens/welcome_page.dart';
 import 'screens/about_app.dart';
@@ -20,9 +22,12 @@ import 'screens/login_role_selection.dart';
 import 'screens/login_screen.dart';
 import 'screens/customer_dashboard.dart';
 import 'screens/instant_pickup/waste_type_selection.dart';
-import 'screens/instant_pickup/location_selection.dart';
+import 'screens/instant_pickup/location_selection.dart' as instant_location;
+import 'screens/instant_pickup/confirmation.dart' as instant_confirmation;
 import 'screens/scheduled_pickup/waste_type_selection.dart';
 import 'screens/scheduled_pickup/datetime_selection.dart';
+import 'screens/scheduled_pickup/location_selection.dart' as scheduled_location;
+import 'screens/scheduled_pickup/confirmation.dart' as scheduled_confirmation;
 import 'models/customer.dart';
 
 void main() async {
@@ -68,12 +73,12 @@ class EcoLiftApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/customer_dashboard': (context) => const CustomerDashboard(),
         '/customer_welcome': (context) => const CustomerWelcome(),
-        '/customer_personal_info': (context) => CustomerPersonalInfo(),
+        '/customer_personal_info': (context) => const CustomerPersonalInfo(),
         '/instant_pickup': (context) => const WasteTypeSelection(),
         '/instant_pickup_location': (context) {
           final args = ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>?;
-          return LocationSelection(
+          return instant_location.LocationSelection(
             selectedWasteTypes:
                 args?['selectedWasteTypes'] as List<String>? ?? [],
           );
@@ -90,12 +95,14 @@ class EcoLiftApp extends StatelessWidget {
         '/scheduled_pickup_location': (context) {
           final args = ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>?;
-          return LocationSelection(
+          return scheduled_location.LocationSelection(
             selectedWasteTypes:
                 args?['selectedWasteTypes'] as List<String>? ?? [],
             scheduledDateTime: args?['scheduledDateTime'] as DateTime?,
           );
         },
+        '/instant_pickup_confirmation': (context) => const instant_confirmation.PickupConfirmation(),
+        '/scheduled_pickup_confirmation': (context) => const scheduled_confirmation.PickupConfirmation(),
         '/customer_address': (context) {
           final args = ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>?;
@@ -117,9 +124,9 @@ class EcoLiftApp extends StatelessWidget {
               ModalRoute.of(context)?.settings.arguments as Customer;
           return CustomerRegistrationComplete(customer: customer);
         },
-        '/map_location': (context) => MapLocation(),
-        '/collector_welcome': (context) => CollectorWelcome(),
-        '/collector_personal_info': (context) => CollectorPersonalInfo(),
+        '/map_location': (context) => const MapLocation(),
+        '/collector_welcome': (context) => const CollectorWelcome(),
+        '/collector_personal_info': (context) => const CollectorPersonalInfo(),
         '/collector_vehicle': (context) {
           final args = ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>?;

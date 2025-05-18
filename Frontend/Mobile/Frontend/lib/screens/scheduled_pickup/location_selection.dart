@@ -48,7 +48,6 @@ class _LocationSelectionState extends State<LocationSelection> {
       setState(() {
         _isLoading = false;
       });
-      // Show error message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -135,14 +134,14 @@ class _LocationSelectionState extends State<LocationSelection> {
                   onPressed: _selectedLocation == null
                       ? null
                       : () {
-                          // TODO: Implement order placement
                           Navigator.pushNamed(
                             context,
-                            '/instant_pickup_confirmation',
+                            '/scheduled_pickup_confirmation',
                             arguments: {
                               'selectedWasteTypes': widget.selectedWasteTypes,
                               'location': _selectedLocation,
                               'address': _address,
+                              'scheduledDateTime': widget.scheduledDateTime,
                             },
                           );
                         },
