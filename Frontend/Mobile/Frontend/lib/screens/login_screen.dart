@@ -78,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen>
             _role == 'customer'
                 ? '/customer_dashboard'
                 : '/collector_dashboard',
+            arguments: response['user'],
           );
         } else {
           setState(() {

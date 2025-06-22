@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'customer_profile.dart';
 
 class CustomerDashboard extends StatefulWidget {
   final Map<String, dynamic>? userData;
@@ -294,6 +295,22 @@ class _CustomerDashboardState extends State<CustomerDashboard>
           setState(() {
             _selectedIndex = index;
           });
+
+          // Handle navigation based on selected index
+          if (index == 3) {
+            // Profile index
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    CustomerProfile(userData: widget.userData),
+              ),
+            );
+            // Reset the selected index to home after navigation
+            setState(() {
+              _selectedIndex = 0;
+            });
+          }
         },
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
