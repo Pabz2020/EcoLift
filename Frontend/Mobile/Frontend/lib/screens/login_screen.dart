@@ -129,6 +129,13 @@ class _LoginScreenState extends State<LoginScreen>
                             color: Colors.white),
                       ),
                       const SizedBox(height: 20),
+                      Center(
+                        child: Image.asset(
+                          'assets/images/ecolift_logo.png',
+                          height: 80,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       const Text(
                         'Welcome Back!',
                         style: TextStyle(

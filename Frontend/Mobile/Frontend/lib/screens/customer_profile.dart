@@ -155,10 +155,13 @@ class _CustomerProfileState extends State<CustomerProfile>
                                         width: 3,
                                       ),
                                     ),
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 60,
-                                      color: primaryGreen,
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/ecolift_logo.png',
+                                        height: 80,
+                                        width: 80,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 16),

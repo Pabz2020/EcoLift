@@ -87,7 +87,7 @@ class _CustomerWelcomeState extends State<CustomerWelcome>
                   ),
                   padding: const EdgeInsets.all(32),
                   child: Image.asset(
-                    'assets/images/ecolift_logo.png',
+                    'assets/images/ecolift_logo_without_name.png',
                     height: 80,
                   ),
                 ),
@@ -133,7 +133,8 @@ class _CustomerWelcomeState extends State<CustomerWelcome>
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.green.shade700,
                     elevation: 6,
-                    padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 48, vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),

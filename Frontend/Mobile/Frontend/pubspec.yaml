@@ -24,5 +24,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/ecolift_logo.png
+    - assets/images/ecolift_logo_without_name.png
+    - assets/images/
+    
   
   

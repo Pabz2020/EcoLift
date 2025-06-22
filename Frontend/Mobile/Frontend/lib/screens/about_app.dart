@@ -58,73 +58,75 @@ class _AboutAppState extends State<AboutApp>
             opacity: _fadeAnimation,
             child: SlideTransition(
               position: _slideAnimation,
-              child: Card(
-                elevation: 12,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 420,
                 ),
-                color: Colors.white,
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          shape: BoxShape.circle,
+                child: Card(
+                  elevation: 16,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                  color: Colors.white,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 36),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/images/ecolift_logo.png',
+                          height: 80,
                         ),
-                        padding: const EdgeInsets.all(18),
-                        child: Icon(
-                          Icons.recycling,
-                          color: Colors.green.shade700,
-                          size: 48,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      const Text(
-                        'Turn your waste into worth.',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                          letterSpacing: 1.1,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Join us to recycle smarter and keep the environment cleaner! EcoLift connects you with certified waste collectors for safe, eco-friendly disposal and recycling.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/role_selection');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green.shade700,
-                          foregroundColor: Colors.white,
-                          elevation: 6,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 40, vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 18,
+                        const SizedBox(height: 24),
+                        const Text(
+                          'Turn your waste into worth.',
+                          style: TextStyle(
+                            fontSize: 26,
                             fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                            letterSpacing: 1.1,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 18),
+                        const Text(
+                          'Join us to recycle smarter and keep the environment cleaner! EcoLift connects you with certified waste collectors for safe, eco-friendly disposal and recycling.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54,
+                            height: 1.5,
                           ),
                         ),
-                        child: const Text('Continue'),
-                      ),
-                    ],
+                        const SizedBox(height: 36),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/role_selection');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green.shade700,
+                              foregroundColor: Colors.white,
+                              elevation: 8,
+                              padding: const EdgeInsets.symmetric(vertical: 18),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              shadowColor: Colors.green.shade200,
+                            ),
+                            child: const Text('Continue'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
