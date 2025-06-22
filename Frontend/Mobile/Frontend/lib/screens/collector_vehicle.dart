@@ -6,7 +6,7 @@ class CollectorVehicle extends StatefulWidget {
   const CollectorVehicle({super.key, required this.personalInfo});
 
   @override
-  _CollectorVehicleState createState() => _CollectorVehicleState();
+  State<CollectorVehicle> createState() => _CollectorVehicleState();
 }
 
 class _CollectorVehicleState extends State<CollectorVehicle>
@@ -114,7 +114,7 @@ class _CollectorVehicleState extends State<CollectorVehicle>
                                 Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.white.withValues(alpha: 0.2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
@@ -152,7 +152,7 @@ class _CollectorVehicleState extends State<CollectorVehicle>
                                 borderRadius: BorderRadius.circular(20),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
+                                    color: Colors.black.withValues(alpha: 0.1),
                                     blurRadius: 10,
                                     offset: const Offset(0, 4),
                                   ),
@@ -300,7 +300,7 @@ class _CollectorVehicleState extends State<CollectorVehicle>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

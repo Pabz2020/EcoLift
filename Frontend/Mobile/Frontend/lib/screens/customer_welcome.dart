@@ -79,7 +79,7 @@ class _CustomerWelcomeState extends State<CustomerWelcome>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.green.withOpacity(0.15),
+                        color: Colors.green.withValues(alpha: 0.15),
                         blurRadius: 30,
                         spreadRadius: 5,
                       ),
@@ -115,7 +115,7 @@ class _CustomerWelcomeState extends State<CustomerWelcome>
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white.withOpacity(0.85),
+                          color: Colors.white.withValues(alpha: 0.85),
                         ),
                       ),
                     ],

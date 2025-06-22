@@ -79,7 +79,7 @@ class _WelcomePageState extends State<WelcomePage>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.green.withOpacity(0.15),
+                        color: Colors.green.withValues(alpha: 0.15),
                         blurRadius: 30,
                         spreadRadius: 5,
                       ),
@@ -100,7 +100,7 @@ class _WelcomePageState extends State<WelcomePage>
                   opacity: _textFadeAnimation,
                   child: const Column(
                     children: [
-                      const Text(
+                      Text(
                         'Welcome to ECO LIFT',
                         style: TextStyle(
                           fontSize: 28,
@@ -109,8 +109,8 @@ class _WelcomePageState extends State<WelcomePage>
                           letterSpacing: 1.2,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
+                      SizedBox(height: 8),
+                      Text(
                         'Waste to Wonders',
                         style: TextStyle(
                           fontSize: 18,

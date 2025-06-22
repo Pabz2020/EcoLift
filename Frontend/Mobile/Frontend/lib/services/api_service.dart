@@ -26,10 +26,6 @@ class ApiService {
       // Use the customer's toJson method to create the request body
       final requestBody = customer.toJson();
 
-      print('Attempting to register customer');
-      print('Request URL: $baseUrl/register');
-      print('Request body: ${jsonEncode(requestBody)}');
-
       final response = await http
           .post(
         Uri.parse('$baseUrl/register'),
@@ -46,9 +42,6 @@ class ApiService {
         },
       );
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
       if (response.statusCode == 201 || response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         return {
@@ -57,9 +50,6 @@ class ApiService {
           'data': responseData['user'] ?? responseData,
         };
       } else {
-        print('Server returned error status: ${response.statusCode}');
-        print('Error response body: ${response.body}');
-
         String message;
         try {
           final responseData = jsonDecode(response.body);
@@ -76,7 +66,6 @@ class ApiService {
         };
       }
     } catch (e) {
-      print('Detailed error during registration: $e');
       String errorMessage;
 
       if (e is TimeoutException) {
@@ -91,7 +80,6 @@ class ApiService {
         errorMessage = 'Network error: ${e.toString()}';
       }
 
-      print('Error message: $errorMessage');
       return {
         'success': false,
         'message': errorMessage,
@@ -122,9 +110,6 @@ class ApiService {
         },
       );
 
-      print('Login response status: ${response.statusCode}');
-      print('Login response body: ${response.body}');
-
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
@@ -141,7 +126,6 @@ class ApiService {
         };
       }
     } catch (e) {
-      print('Error during login: $e');
       String errorMessage;
 
       if (e is TimeoutException) {

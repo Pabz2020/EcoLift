@@ -11,7 +11,7 @@ class CustomerAddress extends StatefulWidget {
   const CustomerAddress({Key? key, required this.customer}) : super(key: key);
 
   @override
-  _CustomerAddressState createState() => _CustomerAddressState();
+  State<CustomerAddress> createState() => _CustomerAddressState();
 }
 
 class _CustomerAddressState extends State<CustomerAddress>
@@ -187,11 +187,11 @@ class _CustomerAddressState extends State<CustomerAddress>
                     child: Container(
                       width: 420,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(32),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.green.withOpacity(0.08),
+                            color: Colors.green.withValues(alpha: 0.08),
                             blurRadius: 24,
                             offset: const Offset(0, 8),
                           ),

@@ -135,10 +135,10 @@ class _WasteTypeSelectionState extends State<WasteTypeSelection>
                 margin: const EdgeInsets.symmetric(horizontal: 24),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -146,7 +146,7 @@ class _WasteTypeSelectionState extends State<WasteTypeSelection>
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -160,7 +160,7 @@ class _WasteTypeSelectionState extends State<WasteTypeSelection>
                       child: Text(
                         'Select all types of waste you want to dispose of',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           fontSize: 14,
                           height: 1.4,
                         ),
@@ -214,8 +214,8 @@ class _WasteTypeSelectionState extends State<WasteTypeSelection>
                                   end: Alignment.bottomRight,
                                   colors: isSelected
                                       ? [
-                                          waste.color.withOpacity(0.1),
-                                          waste.color.withOpacity(0.2),
+                                          waste.color.withValues(alpha: 0.1),
+                                          waste.color.withValues(alpha: 0.2),
                                         ]
                                       : [
                                           Colors.white,
@@ -236,7 +236,7 @@ class _WasteTypeSelectionState extends State<WasteTypeSelection>
                                     padding: const EdgeInsets.all(12),
                                     decoration: BoxDecoration(
                                       color: isSelected
-                                          ? waste.color.withOpacity(0.1)
+                                          ? waste.color.withValues(alpha: 0.1)
                                           : Colors.grey.shade100,
                                       shape: BoxShape.circle,
                                     ),

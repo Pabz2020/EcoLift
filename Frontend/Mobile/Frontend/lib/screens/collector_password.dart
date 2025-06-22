@@ -8,7 +8,7 @@ class CollectorPassword extends StatefulWidget {
   const CollectorPassword({super.key, required this.collectorInfo});
 
   @override
-  _CollectorPasswordState createState() => _CollectorPasswordState();
+  State<CollectorPassword> createState() => _CollectorPasswordState();
 }
 
 class _CollectorPasswordState extends State<CollectorPassword>
@@ -76,8 +76,6 @@ class _CollectorPasswordState extends State<CollectorPassword>
           'vehicleInfo': collectorData['vehicleInfo'],
           'wasteTypes': collectorData['wasteTypes'],
         };
-        print(
-            'Sending collector registration data: \\n${json.encode(requestData)}');
         final response = await http.post(
           Uri.parse('http://10.0.2.2:3000/api/users/register'),
           headers: {
@@ -86,8 +84,6 @@ class _CollectorPasswordState extends State<CollectorPassword>
           },
           body: json.encode(requestData),
         );
-        print('Response status code: \\n${response.statusCode}');
-        print('Response body: \\n${response.body}');
         if (response.statusCode == 201) {
           if (!mounted) return;
           Navigator.pushReplacementNamed(
@@ -103,7 +99,6 @@ class _CollectorPasswordState extends State<CollectorPassword>
           });
         }
       } catch (e) {
-        print('Error during collector registration: $e');
         setState(() {
           _errorMessage =
               'Network error: \\n${e.toString()}\\nPlease check your connection and try again.';
@@ -174,7 +169,7 @@ class _CollectorPasswordState extends State<CollectorPassword>
                                 Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.white.withValues(alpha: 0.2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
@@ -213,6 +208,37 @@ class _CollectorPasswordState extends State<CollectorPassword>
                               ),
                             ),
                             const SizedBox(height: 30),
+                            // Error Message
+                            if (_errorMessage != null)
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                margin: const EdgeInsets.only(bottom: 16),
+                                decoration: BoxDecoration(
+                                  color: Colors.red.shade50,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border:
+                                      Border.all(color: Colors.red.shade200),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline,
+                                      color: Colors.red.shade700,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        _errorMessage!,
+                                        style: TextStyle(
+                                          color: Colors.red.shade900,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             // Password Field
                             _buildPasswordField(
                               controller: _passwordController,
@@ -316,7 +342,7 @@ class _CollectorPasswordState extends State<CollectorPassword>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
