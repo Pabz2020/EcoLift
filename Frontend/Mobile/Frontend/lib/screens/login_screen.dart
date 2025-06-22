@@ -78,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen>
             _role == 'customer'
                 ? '/customer_dashboard'
                 : '/collector_dashboard',
+            arguments: response['user'],
           );
         } else {
           setState(() {
@@ -88,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen>
         setState(() {
           _errorMessage = 'Login failed. Please try again.';
         });
-        print('Login error: $e');
       } finally {
         if (mounted) {
           setState(() {
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen>
                         'Sign in to continue',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white.withValues(alpha: 0.8),
                         ),
                       ),
                       const SizedBox(height: 40),

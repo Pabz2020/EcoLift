@@ -6,7 +6,7 @@ class CollectorWasteTypes extends StatefulWidget {
   const CollectorWasteTypes({super.key, required this.collectorInfo});
 
   @override
-  _CollectorWasteTypesState createState() => _CollectorWasteTypesState();
+  State<CollectorWasteTypes> createState() => _CollectorWasteTypesState();
 }
 
 class _CollectorWasteTypesState extends State<CollectorWasteTypes>
@@ -99,7 +99,8 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes>
                   children: [
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                      icon:
+                          const Icon(Icons.arrow_back_ios, color: Colors.white),
                     ),
                     const SizedBox(width: 8),
                     const Text(
@@ -133,7 +134,7 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes>
                                 Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.white.withValues(alpha: 0.2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
@@ -176,7 +177,8 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes>
                             GridView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 childAspectRatio: 1.2,
                                 crossAxisSpacing: 16,
@@ -185,36 +187,45 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes>
                               itemCount: _wasteTypes.length,
                               itemBuilder: (context, index) {
                                 final wasteType = _wasteTypes[index];
-                                final isSelected = _selectedWasteTypes.contains(wasteType['name']);
+                                final isSelected = _selectedWasteTypes
+                                    .contains(wasteType['name']);
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       if (isSelected) {
-                                        _selectedWasteTypes.remove(wasteType['name']);
+                                        _selectedWasteTypes
+                                            .remove(wasteType['name']);
                                       } else {
-                                        _selectedWasteTypes.add(wasteType['name']);
+                                        _selectedWasteTypes
+                                            .add(wasteType['name']);
                                       }
                                     });
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: isSelected ? Colors.white : Colors.white.withOpacity(0.9),
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.white.withValues(alpha: 0.9),
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
+                                          color: Colors.black
+                                              .withValues(alpha: 0.1),
                                           blurRadius: 10,
                                           offset: const Offset(0, 4),
                                         ),
                                       ],
                                     ),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           wasteType['icon'],
                                           size: 32,
-                                          color: isSelected ? const Color(0xFF56AB2F) : Colors.grey,
+                                          color: isSelected
+                                              ? const Color(0xFF56AB2F)
+                                              : Colors.grey,
                                         ),
                                         const SizedBox(height: 8),
                                         Text(
@@ -222,7 +233,9 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes>
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
-                                            color: isSelected ? const Color(0xFF56AB2F) : Colors.grey,
+                                            color: isSelected
+                                                ? const Color(0xFF56AB2F)
+                                                : Colors.grey,
                                           ),
                                         ),
                                         const SizedBox(height: 4),
@@ -231,7 +244,9 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes>
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: isSelected ? const Color(0xFF56AB2F) : Colors.grey,
+                                            color: isSelected
+                                                ? const Color(0xFF56AB2F)
+                                                : Colors.grey,
                                           ),
                                         ),
                                       ],
@@ -247,7 +262,8 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes>
                                 if (_selectedWasteTypes.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content: Text('Please select at least one waste type'),
+                                      content: Text(
+                                          'Please select at least one waste type'),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -266,7 +282,8 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes>
                                 backgroundColor: Colors.white,
                                 foregroundColor: const Color(0xFF56AB2F),
                                 elevation: 0,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
                                 minimumSize: const Size(double.infinity, 0),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),

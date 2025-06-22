@@ -107,7 +107,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
             end: Alignment.bottomRight,
             colors: [Color(0xFFA8E063), Color(0xFF56AB2F)],
           ),
-      ),
+        ),
         child: SafeArea(
           child: Column(
             children: [
@@ -115,10 +115,11 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Row(
-        children: [
+                  children: [
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                      icon:
+                          const Icon(Icons.arrow_back_ios, color: Colors.white),
                     ),
                     const SizedBox(width: 8),
                     const Text(
@@ -134,47 +135,47 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                 ),
               ),
               // Info Banner
-          Container(
+              Container(
                 margin: const EdgeInsets.symmetric(horizontal: 24),
-            padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                   ),
                 ),
-            child: Row(
-              children: [
+                child: Row(
+                  children: [
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                  Icons.info_outline,
+                        Icons.info_outline,
                         color: Colors.white,
                         size: 20,
                       ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Select your preferred date and time for waste collection',
-                    style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
-                      fontSize: 14,
-                          height: 1.4,
                     ),
-                  ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Select your preferred date and time for waste collection',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontSize: 14,
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
               const SizedBox(height: 24),
               // Content
-          Expanded(
+              Expanded(
                 child: FadeTransition(
                   opacity: _fadeAnimation,
                   child: SlideTransition(
@@ -186,23 +187,24 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                         children: [
                           // Selected Waste Types
                           Container(
-              padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.15),
+                              color: Colors.white.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.3),
+                                color: Colors.white.withValues(alpha: 0.3),
                               ),
                             ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Row(
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.2),
+                                        color:
+                                            Colors.white.withValues(alpha: 0.2),
                                         shape: BoxShape.circle,
                                       ),
                                       child: const Icon(
@@ -212,28 +214,30 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                                       ),
                                     ),
                                     const SizedBox(width: 12),
-                  const Text(
+                                    const Text(
                                       'Selected Waste Types',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.white,
-                    ),
-                  ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: widget.selectedWasteTypes.map((type) {
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children:
+                                      widget.selectedWasteTypes.map((type) {
                                     return Container(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 12,
                                         vertical: 6,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.2),
+                                        color:
+                                            Colors.white.withValues(alpha: 0.2),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Text(
@@ -243,9 +247,9 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                                           fontSize: 14,
                                         ),
                                       ),
-                      );
-                    }).toList(),
-                  ),
+                                    );
+                                  }).toList(),
+                                ),
                               ],
                             ),
                           ),
@@ -257,7 +261,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
+                                  color: Colors.black.withValues(alpha: 0.1),
                                   blurRadius: 10,
                                   offset: const Offset(0, 4),
                                 ),
@@ -266,7 +270,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
-                    onTap: () => _selectDate(context),
+                                onTap: () => _selectDate(context),
                                 borderRadius: BorderRadius.circular(20),
                                 child: Padding(
                                   padding: const EdgeInsets.all(20),
@@ -276,7 +280,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                                         padding: const EdgeInsets.all(12),
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF56AB2F)
-                                              .withOpacity(0.1),
+                                              .withValues(alpha: 0.1),
                                           shape: BoxShape.circle,
                                         ),
                                         child: const Icon(
@@ -323,9 +327,9 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                                   ),
                                 ),
                               ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
                           // Time Selection
                           Container(
                             decoration: BoxDecoration(
@@ -333,7 +337,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
+                                  color: Colors.black.withValues(alpha: 0.1),
                                   blurRadius: 10,
                                   offset: const Offset(0, 4),
                                 ),
@@ -342,7 +346,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
-                    onTap: () => _selectTime(context),
+                                onTap: () => _selectTime(context),
                                 borderRadius: BorderRadius.circular(20),
                                 child: Padding(
                                   padding: const EdgeInsets.all(20),
@@ -352,7 +356,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                                         padding: const EdgeInsets.all(12),
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF56AB2F)
-                                              .withOpacity(0.1),
+                                              .withValues(alpha: 0.1),
                                           shape: BoxShape.circle,
                                         ),
                                         child: const Icon(
@@ -378,7 +382,8 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                                             const SizedBox(height: 4),
                                             Text(
                                               _selectedTime != null
-                                                  ? _selectedTime!.format(context)
+                                                  ? _selectedTime!
+                                                      .format(context)
                                                   : 'No time selected',
                                               style: TextStyle(
                                                 fontSize: 14,
@@ -399,60 +404,60 @@ class _DateTimeSelectionState extends State<DateTimeSelection>
                                   ),
                                 ),
                               ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
                 ),
               ),
               // Continue Button
-          Padding(
+              Padding(
                 padding: const EdgeInsets.all(24),
-            child: ElevatedButton(
-              onPressed: (_selectedDate != null && _selectedTime != null)
-                  ? () {
-                      final scheduledDateTime = DateTime(
-                        _selectedDate!.year,
-                        _selectedDate!.month,
-                        _selectedDate!.day,
-                        _selectedTime!.hour,
-                        _selectedTime!.minute,
-                      );
+                child: ElevatedButton(
+                  onPressed: (_selectedDate != null && _selectedTime != null)
+                      ? () {
+                          final scheduledDateTime = DateTime(
+                            _selectedDate!.year,
+                            _selectedDate!.month,
+                            _selectedDate!.day,
+                            _selectedTime!.hour,
+                            _selectedTime!.minute,
+                          );
 
-                      Navigator.pushNamed(
-                        context,
-                        '/scheduled_pickup_location',
-                        arguments: {
-                          'selectedWasteTypes': widget.selectedWasteTypes,
-                          'scheduledDateTime': scheduledDateTime,
-                        },
-                      );
-                    }
-                  : null,
-              style: ElevatedButton.styleFrom(
+                          Navigator.pushNamed(
+                            context,
+                            '/scheduled_pickup_location',
+                            arguments: {
+                              'selectedWasteTypes': widget.selectedWasteTypes,
+                              'scheduledDateTime': scheduledDateTime,
+                            },
+                          );
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: const Color(0xFF56AB2F),
                     elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                minimumSize: const Size(double.infinity, 0),
-                shape: RoundedRectangleBorder(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    minimumSize: const Size(double.infinity, 0),
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
-                ),
+                    ),
                     textStyle: const TextStyle(
                       fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   child: Text(
                     (_selectedDate == null || _selectedTime == null)
                         ? 'Select Date and Time'
                         : 'Continue to Location',
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
           ),
         ),
       ),

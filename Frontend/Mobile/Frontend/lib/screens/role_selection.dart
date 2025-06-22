@@ -86,7 +86,7 @@ class _RoleSelectionState extends State<RoleSelection>
               width: 220,
               height: 220,
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.18),
+                color: Colors.green.withValues(alpha: 0.18),
                 shape: BoxShape.circle,
               ),
               child: BackdropFilter(
@@ -238,12 +238,12 @@ class _GlassRoleCardState extends State<_GlassRoleCard> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(28),
             border: Border.all(
-              color: widget.color.withOpacity(0.18),
+              color: widget.color.withValues(alpha: 0.18),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: widget.color.withOpacity(_isPressed ? 0.10 : 0.18),
+                color: widget.color.withValues(alpha: _isPressed ? 0.10 : 0.18),
                 blurRadius: 24,
                 offset: const Offset(0, 8),
               ),
@@ -254,14 +254,15 @@ class _GlassRoleCardState extends State<_GlassRoleCard> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
               child: Container(
-                color: Colors.white.withOpacity(0.55),
-                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
+                color: Colors.white.withValues(alpha: 0.55),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
                 child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
-                        color: widget.color.withOpacity(0.13),
+                        color: widget.color.withValues(alpha: 0.13),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -296,7 +297,7 @@ class _GlassRoleCardState extends State<_GlassRoleCard> {
                     ),
                     Icon(
                       Icons.arrow_forward_ios,
-                      color: widget.color.withOpacity(0.5),
+                      color: widget.color.withValues(alpha: 0.5),
                       size: 26,
                     ),
                   ],

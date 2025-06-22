@@ -82,11 +82,11 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo>
                     child: Container(
                       width: 420,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(32),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.green.withOpacity(0.08),
+                            color: Colors.green.withValues(alpha: 0.08),
                             blurRadius: 24,
                             offset: const Offset(0, 8),
                           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationSelection extends StatefulWidget {
@@ -17,14 +18,15 @@ class LocationSelection extends StatefulWidget {
 }
 
 class _LocationSelectionState extends State<LocationSelection> {
-  GoogleMapController? _mapController;
   LatLng? _selectedLocation;
   bool _isLoading = true;
   final String _address = '';
+  late final MapController _mapController;
 
   @override
   void initState() {
     super.initState();
+    _mapController = MapController();
     _getCurrentLocation();
   }
 
@@ -33,22 +35,15 @@ class _LocationSelectionState extends State<LocationSelection> {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-
       setState(() {
         _selectedLocation = LatLng(position.latitude, position.longitude);
         _isLoading = false;
       });
-
-      if (_mapController != null) {
-        _mapController!.animateCamera(
-          CameraUpdate.newLatLngZoom(_selectedLocation!, 15),
-        );
-      }
+      _mapController.move(_selectedLocation!, 15);
     } catch (e) {
       setState(() {
         _isLoading = false;
       });
-      // Show error message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -68,36 +63,41 @@ class _LocationSelectionState extends State<LocationSelection> {
       ),
       body: Stack(
         children: [
-          if (_selectedLocation != null)
-            GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: _selectedLocation!,
-                zoom: 15,
+          if (_selectedLocation != null && !_isLoading)
+            FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
+                initialCenter: _selectedLocation!,
+                initialZoom: 15,
+                onTap: (tapPosition, point) {
+                  setState(() {
+                    _selectedLocation = point;
+                  });
+                  _mapController.move(point, 15);
+                },
               ),
-              onMapCreated: (controller) {
-                _mapController = controller;
-              },
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
-              markers: _selectedLocation == null
-                  ? {}
-                  : {
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                ),
+                if (_selectedLocation != null)
+                  MarkerLayer(
+                    markers: [
                       Marker(
-                        markerId: const MarkerId('pickup'),
-                        position: _selectedLocation!,
-                        draggable: true,
-                        onDragEnd: (newPosition) {
-                          setState(() {
-                            _selectedLocation = newPosition;
-                          });
-                        },
+                        point: _selectedLocation!,
+                        width: 40,
+                        height: 40,
+                        child: const Icon(
+                          Icons.location_pin,
+                          color: Colors.red,
+                          size: 40,
+                        ),
                       ),
-                    },
-              onTap: (position) {
-                setState(() {
-                  _selectedLocation = position;
-                });
-              },
+                    ],
+                  ),
+              ],
             )
           else if (_isLoading)
             const Center(
@@ -135,7 +135,6 @@ class _LocationSelectionState extends State<LocationSelection> {
                   onPressed: _selectedLocation == null
                       ? null
                       : () {
-                          // TODO: Implement order placement
                           Navigator.pushNamed(
                             context,
                             '/instant_pickup_confirmation',

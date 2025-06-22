@@ -21,6 +21,7 @@ import 'screens/collector_welcome.dart';
 import 'screens/login_role_selection.dart';
 import 'screens/login_screen.dart';
 import 'screens/customer_dashboard.dart';
+import 'screens/customer_profile.dart';
 import 'screens/instant_pickup/waste_type_selection.dart';
 import 'screens/instant_pickup/location_selection.dart' as instant_location;
 import 'screens/instant_pickup/confirmation.dart' as instant_confirmation;
@@ -71,7 +72,10 @@ class EcoLiftApp extends StatelessWidget {
         '/role_selection': (context) => const RoleSelection(),
         '/login_role_selection': (context) => const LoginRoleSelection(),
         '/login': (context) => const LoginScreen(),
-        '/customer_dashboard': (context) => const CustomerDashboard(),
+        '/customer_dashboard': (context) {
+          final userData = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          return CustomerDashboard(userData: userData);
+        },
         '/customer_welcome': (context) => const CustomerWelcome(),
         '/customer_personal_info': (context) => const CustomerPersonalInfo(),
         '/instant_pickup': (context) => const WasteTypeSelection(),
@@ -146,6 +150,10 @@ class EcoLiftApp extends StatelessWidget {
         },
         '/collector_registration_success': (context) =>
             const CollectorRegistrationSuccess(),
+        '/customer_profile': (context) {
+          final userData = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          return CustomerProfile(userData: userData);
+        },
       },
     );
   }
@@ -163,7 +171,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/welcome');
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/welcome');
+      }
     });
   }
 

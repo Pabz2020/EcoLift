@@ -22,7 +22,8 @@ class ScheduledWasteTypeSelection extends StatefulWidget {
       _ScheduledWasteTypeSelectionState();
 }
 
-class _ScheduledWasteTypeSelectionState extends State<ScheduledWasteTypeSelection>
+class _ScheduledWasteTypeSelectionState
+    extends State<ScheduledWasteTypeSelection>
     with SingleTickerProviderStateMixin {
   final List<WasteType> wasteTypes = const [
     WasteType(
@@ -116,7 +117,8 @@ class _ScheduledWasteTypeSelectionState extends State<ScheduledWasteTypeSelectio
                   children: [
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                      icon:
+                          const Icon(Icons.arrow_back_ios, color: Colors.white),
                     ),
                     const SizedBox(width: 8),
                     const Text(
@@ -136,10 +138,10 @@ class _ScheduledWasteTypeSelectionState extends State<ScheduledWasteTypeSelectio
                 margin: const EdgeInsets.symmetric(horizontal: 24),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -147,7 +149,7 @@ class _ScheduledWasteTypeSelectionState extends State<ScheduledWasteTypeSelectio
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -161,7 +163,7 @@ class _ScheduledWasteTypeSelectionState extends State<ScheduledWasteTypeSelectio
                       child: Text(
                         'Select all types of waste you want to dispose of',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           fontSize: 14,
                           height: 1.4,
                         ),
@@ -179,7 +181,8 @@ class _ScheduledWasteTypeSelectionState extends State<ScheduledWasteTypeSelectio
                     position: _slideAnimation,
                     child: GridView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: 1.1,
                         crossAxisSpacing: 16,
@@ -215,8 +218,8 @@ class _ScheduledWasteTypeSelectionState extends State<ScheduledWasteTypeSelectio
                                   end: Alignment.bottomRight,
                                   colors: isSelected
                                       ? [
-                                          waste.color.withOpacity(0.1),
-                                          waste.color.withOpacity(0.2),
+                                          waste.color.withValues(alpha: 0.1),
+                                          waste.color.withValues(alpha: 0.2),
                                         ]
                                       : [
                                           Colors.white,
@@ -237,7 +240,7 @@ class _ScheduledWasteTypeSelectionState extends State<ScheduledWasteTypeSelectio
                                     padding: const EdgeInsets.all(12),
                                     decoration: BoxDecoration(
                                       color: isSelected
-                                          ? waste.color.withOpacity(0.1)
+                                          ? waste.color.withValues(alpha: 0.1)
                                           : Colors.grey.shade100,
                                       shape: BoxShape.circle,
                                     ),

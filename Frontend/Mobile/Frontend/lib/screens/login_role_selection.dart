@@ -71,11 +71,11 @@ class _LoginRoleSelectionState extends State<LoginRoleSelection>
                   child: Container(
                     width: 380,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       borderRadius: BorderRadius.circular(32),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.green.withOpacity(0.08),
+                          color: Colors.green.withValues(alpha: 0.08),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),

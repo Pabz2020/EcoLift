@@ -71,8 +71,6 @@ class _CustomerPasswordState extends State<CustomerPassword>
       });
 
       try {
-        print('Customer Info received: ${widget.customerInfo}');
-
         // Validate all required fields are present
         if (!widget.customerInfo.containsKey('name') ||
             !widget.customerInfo.containsKey('email') ||
@@ -96,25 +94,12 @@ class _CustomerPasswordState extends State<CustomerPassword>
           password: _passwordController.text,
         );
 
-        print('Attempting to register customer with data:');
-        print('Name: ${customer.name}');
-        print('Email: ${customer.email}');
-        print('Phone: ${customer.phone}');
-        print('Address No: ${customer.addressNo}');
-        print('Street: ${customer.street}');
-        print('City: ${customer.city}');
-        print('District: ${customer.district}');
-
         // Call the API to register the customer
         final response = await ApiService.registerCustomer(customer);
-
-        print('Registration response: $response');
 
         if (!mounted) return;
 
         if (response['success']) {
-          print('Registration successful, navigating to completion screen');
-
           // Use the original customer object instead of creating a new one from response
           Navigator.pushReplacementNamed(
             context,
@@ -122,13 +107,11 @@ class _CustomerPasswordState extends State<CustomerPassword>
             arguments: customer,
           );
         } else {
-          print('Registration failed with message: ${response['message']}');
           setState(() {
             _errorMessage = response['message'];
           });
         }
       } catch (e) {
-        print('Error during registration: $e');
         setState(() {
           _errorMessage = e.toString().contains('Missing required')
               ? 'Please fill in all required information'
@@ -168,7 +151,8 @@ class _CustomerPasswordState extends State<CustomerPassword>
             child: SlideTransition(
               position: _slideAnimation,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(32),
                   child: BackdropFilter(
@@ -176,17 +160,18 @@ class _CustomerPasswordState extends State<CustomerPassword>
                     child: Container(
                       width: 420,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(32),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.green.withOpacity(0.08),
+                            color: Colors.green.withValues(alpha: 0.08),
                             blurRadius: 24,
                             offset: const Offset(0, 8),
                           ),
                         ],
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 28, vertical: 32),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -233,7 +218,8 @@ class _CustomerPasswordState extends State<CustomerPassword>
                                 decoration: BoxDecoration(
                                   color: Colors.red.shade50,
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.red.shade200),
+                                  border:
+                                      Border.all(color: Colors.red.shade200),
                                 ),
                                 child: Text(
                                   _errorMessage!,
@@ -296,7 +282,8 @@ class _CustomerPasswordState extends State<CustomerPassword>
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      _obscureConfirmPassword = !_obscureConfirmPassword;
+                                      _obscureConfirmPassword =
+                                          !_obscureConfirmPassword;
                                     });
                                   },
                                 ),
@@ -328,7 +315,8 @@ class _CustomerPasswordState extends State<CustomerPassword>
                               onPressed: _isLoading ? null : _submitForm,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
-                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18),
                                 ),
@@ -344,7 +332,8 @@ class _CustomerPasswordState extends State<CustomerPassword>
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2,
                                         valueColor:
-                                            AlwaysStoppedAnimation<Color>(Colors.white),
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
                                       ),
                                     )
                                   : const Text('Register'),

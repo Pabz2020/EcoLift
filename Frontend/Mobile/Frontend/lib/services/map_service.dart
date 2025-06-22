@@ -2,8 +2,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapService {
-  static const String _apiKey =
-      'YOUR_GOOGLE_MAPS_API_KEY'; // Replace with your actual API key
+  // static const String _apiKey =
+  //     'YOUR_GOOGLE_MAPS_API_KEY'; // Replace with your actual API key
 
   static Future<Position> getCurrentLocation() async {
     bool serviceEnabled;

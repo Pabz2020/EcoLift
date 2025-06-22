@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'customer_profile.dart';
 
 class CustomerDashboard extends StatefulWidget {
   final Map<String, dynamic>? userData;
@@ -120,7 +121,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                                   _greeting,
                                   style: TextStyle(
                                     fontSize: 18,
-                                    color: Colors.white.withOpacity(0.9),
+                                    color: Colors.white.withValues(alpha: 0.9),
                                   ),
                                 ),
                               ],
@@ -132,10 +133,10 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
+                              color: Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(30),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.3),
+                                color: Colors.white.withValues(alpha: 0.3),
                               ),
                             ),
                             child: const Row(
@@ -175,7 +176,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                         'Select how you want to manage your waste',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -208,10 +209,10 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                       // Info banner
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
+                          color: Colors.white.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
+                            color: Colors.white.withValues(alpha: 0.3),
                           ),
                         ),
                         padding: const EdgeInsets.all(24),
@@ -223,7 +224,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.white.withValues(alpha: 0.2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
@@ -250,7 +251,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                               'and recycling of your waste.',
                               style: TextStyle(
                                 fontSize: 15,
-                                color: Colors.white.withOpacity(0.9),
+                                color: Colors.white.withValues(alpha: 0.9),
                                 height: 1.5,
                               ),
                             ),
@@ -294,6 +295,22 @@ class _CustomerDashboardState extends State<CustomerDashboard>
           setState(() {
             _selectedIndex = index;
           });
+
+          // Handle navigation based on selected index
+          if (index == 3) {
+            // Profile index
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    CustomerProfile(userData: widget.userData),
+              ),
+            );
+            // Reset the selected index to home after navigation
+            setState(() {
+              _selectedIndex = 0;
+            });
+          }
         },
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
@@ -347,7 +364,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
               end: Alignment.bottomRight,
               colors: [
                 Colors.white,
-                color.withOpacity(0.1),
+                color.withValues(alpha: 0.1),
               ],
             ),
           ),
@@ -361,7 +378,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
+                      color: color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
@@ -396,7 +413,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
+                      color: color.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
