@@ -1,69 +1,73 @@
-import React from 'react'
+import React from 'react';
+import './AboutUs.css'; // New stylesheet
+
+const teamMembers = [
+  {
+    name: "Pabasara Jayawardhana",
+    role: "Chairman",
+    bio: "An artist is someone engaged in an activity deemed to be art.",
+    image: "/images/pabasara.jpeg"
+  },
+  {
+    name: "Sasini Perera",
+    role: "Boss",
+    bio: "An artist is someone engaged in an activity deemed to be art.",
+    image: "/images/sasini.jpeg"
+  },
+  {
+    name: "Ashan Munasinghe",
+    role: "UI/UX Designer",
+    bio: "An artist is someone engaged in an activity deemed to be art.",
+    image: "/images/ashan.jpeg"
+  },
+  {
+    name: "Ishan Kendawela",
+    role: "Artist",
+    bio: "An artist is someone engaged in an activity deemed to be art.",
+    image: "/images/ishan.jpeg"
+  }
+];
 
 export default function AboutUs() {
   return (
-    <div>
-      <div className="App">
-      <section id="about" className="about">
-        <h1>About Us</h1>
-        <p className="subtext">Subtext Subtext Subtext Subtext Subtext Subtext Subtext Subtext Subtext Subtext Subtext Subtext</p>
-        <div className="social-icons">
-          <a href="#">🔗</a>
-          <a href="#">🔗</a>
-          <a href="#">🔗</a>
+    <div className="about-us-page">
+      <header className="about-us-header" data-aos="fade-in">
+        <div className="header-content">
+          <h1 className="about-us-title">About Eco LIFT</h1>
+          <p className="about-us-subtitle">
+            Pioneering a sustainable future through innovative waste management solutions.
+          </p>
+        </div>
+      </header>
+
+      <section className="company-info-section">
+        <div className="info-card" data-aos="fade-right">
+          <h2>Our Mission</h2>
+          <p>
+            To provide convenient, reliable, and eco-friendly waste management services that empower communities to contribute to a cleaner, greener planet. We are committed to reducing landfill waste and promoting a circular economy through technology and education.
+          </p>
+        </div>
+        <div className="info-card" data-aos="fade-left">
+          <h2>Our Vision</h2>
+          <p>
+            To be a global leader in sustainable waste management, creating a world where waste is seen as a resource, and every individual is an active participant in building a zero-waste future for generations to come.
+          </p>
         </div>
       </section>
 
-      <section className="executive-team">
-        <h2>The Executive Team</h2>
-        <p>There’s nothing I really wanted to do in life that I wasn’t able to get good at. That’s my skill.</p>
-
-        <div className="team-container">
-          <div className="team-member">
-            <img src="/images/pabasara.jpeg" alt="Pabasara Jayawardhana" />
-            <h3>Pabasara Jayawardhana</h3>
-            <p>Chairman</p>
-            <p>An artist is someone engaged in an activity deemed to be art.</p>
-          </div>
-
-          <div className="team-member">
-            <img src="/images/sasini.jpeg" alt="Sasini Perera" />
-            <h3>Sasini Perera</h3>
-            <p>Boss</p>
-            <p>An artist is someone engaged in an activity deemed to be art.</p>
-          </div>
-
-          <div className="team-member">
-            <img src="/images/ashan.jpeg" alt="Ashan Munasinghe" />
-            <h3>Ashan Munasinghe</h3>
-            <p>UI/UX Designer</p>
-            <p>An artist is someone engaged in an activity deemed to be art.</p>
-          </div>
-
-          <div className="team-member">
-            <img src="/images/ishan.jpeg" alt="Ishan Kendawela" />
-            <h3>Ishan Kendawela</h3>
-            <p>Artist</p>
-            <p>An artist is someone engaged in an activity deemed to be art.</p>
-          </div>
+      <section className="team-section" data-aos="fade-up">
+        <h2 className="team-title">Meet Our Team</h2>
+        <div className="team-grid">
+          {teamMembers.map((member, index) => (
+            <div key={index} className="team-member-card" data-aos="fade-up" data-aos-delay={index * 100}>
+              <img src={member.image} alt={member.name} className="team-member-image" />
+              <h3 className="team-member-name">{member.name}</h3>
+              <p className="team-member-role">{member.role}</p>
+              <p className="team-member-bio">{member.bio}</p>
+            </div>
+          ))}
         </div>
       </section>
-
-      <section className="stats">
-        <h2>5,234</h2>
-        <p>Number of Clients</p>
-        <p>Text Text Text Text Text Text</p>
-      </section>
-
-      <section className="newsletter">
-        <h3>Be the first to see the news</h3>
-        <p>Your company may not be in the software business, but eventually, a software company will be in your business.</p>
-        <form>
-          <input type="email" placeholder="Enter your email" />
-          <button type="submit">Subscribe</button>
-        </form>
-      </section>
     </div>
-    </div>
-  )
+  );
 }
