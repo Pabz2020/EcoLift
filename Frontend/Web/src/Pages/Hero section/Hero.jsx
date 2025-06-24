@@ -9,10 +9,6 @@ export default function Hero() {
   // Array of 4 images for the carousel - Green theme
   const heroImages = [
     {
-      src: "/images/carousel/forest.jpeg",
-      alt: "A lush green forest with sunlight filtering through the trees, symbolizing a healthy planet."
-    },
-    {
       src: "/images/carousel/leaves.jpeg",
       alt: "Close-up of fresh green leaves with sparkling water droplets, representing life and nature's purity."
     },
