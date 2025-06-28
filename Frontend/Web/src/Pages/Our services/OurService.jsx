@@ -14,12 +14,25 @@ export default function OurService() {
   };
 
   return (
-    <div>
+    <div className="our-services-page">
+      <header className="our-services-header" data-aos="fade-in">
+        <div className="header-content">
+          <h1 className="our-services-title">Our Services</h1>
+          <p className="our-services-subtitle">
+            Comprehensive solutions for a sustainable future.
+          </p>
+        </div>
+      </header>
+      
       <section id="services" className="services-section">
-        <h2>Our Services</h2>
         <div className="services-grid">
-          {displayedServices.map((service) => (
-            <div key={service.id} className="service-card">
+          {displayedServices.map((service, index) => (
+            <div 
+              key={service.id} 
+              className="service-card" 
+              data-aos="fade-up" 
+              data-aos-delay={index * 100}
+            >
               <img src={service.image} alt={service.title} />
               <h3>{service.title}</h3>
               <button 
@@ -34,8 +47,9 @@ export default function OurService() {
         <button 
           onClick={() => navigate('/services/all')} 
           className="view-more"
+          data-aos="fade-up"
         >
-          More →
+          View All Services
         </button>
       </section>
     </div>
