@@ -29,7 +29,10 @@ import 'screens/scheduled_pickup/waste_type_selection.dart';
 import 'screens/scheduled_pickup/datetime_selection.dart';
 import 'screens/scheduled_pickup/location_selection.dart' as scheduled_location;
 import 'screens/scheduled_pickup/confirmation.dart' as scheduled_confirmation;
+import 'screens/instant_pickup/order_placed.dart';
 import 'models/customer.dart';
+import 'screens/collector_location.dart';
+import 'screens/collector_dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,7 +76,8 @@ class EcoLiftApp extends StatelessWidget {
         '/login_role_selection': (context) => const LoginRoleSelection(),
         '/login': (context) => const LoginScreen(),
         '/customer_dashboard': (context) {
-          final userData = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          final userData = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
           return CustomerDashboard(userData: userData);
         },
         '/customer_welcome': (context) => const CustomerWelcome(),
@@ -151,9 +155,17 @@ class EcoLiftApp extends StatelessWidget {
         '/collector_registration_success': (context) =>
             const CollectorRegistrationSuccess(),
         '/customer_profile': (context) {
-          final userData = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          final userData = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
           return CustomerProfile(userData: userData);
         },
+        '/instant_pickup_order_placed': (context) => const PickupOrderPlaced(),
+        '/collector_location': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+          return CollectorLocation(collectorInfo: args ?? {});
+        },
+        '/collector_dashboard': (context) => const CollectorDashboard(),
       },
     );
   }

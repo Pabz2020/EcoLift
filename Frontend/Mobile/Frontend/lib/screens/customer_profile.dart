@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomerProfile extends StatefulWidget {
   final Map<String, dynamic>? userData;
@@ -475,8 +476,12 @@ class _CustomerProfileState extends State<CustomerProfile>
               ),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop();
+                // Clear the authentication token
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('auth_token');
+                if (!mounted) return;
                 // Navigate to welcome page
                 Navigator.of(context).pushNamedAndRemoveUntil(
                   '/welcome',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -73,6 +74,10 @@ class _LoginScreenState extends State<LoginScreen>
         if (!mounted) return;
 
         if (response['success']) {
+          // Store the authentication token
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('auth_token', response['token']);
+
           Navigator.pushReplacementNamed(
             context,
             _role == 'customer'

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import '../../services/pickup_service.dart';
 
 class PickupConfirmation extends StatelessWidget {
@@ -8,9 +8,22 @@ class PickupConfirmation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    if (args == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text(
+            'Error: No data received. Please go back and try again.',
+            style: TextStyle(color: Colors.red, fontSize: 18),
+          ),
+        ),
+      );
+    }
     final List<String> selectedWasteTypes = args['selectedWasteTypes'];
-    final LatLng location = args['location'];
+    final Map<String, dynamic> locationMap = args['location'];
+    final double latitude = locationMap['latitude'];
+    final double longitude = locationMap['longitude'];
+    final LatLng location = LatLng(latitude, longitude);
     final String address = args['address'];
 
     return Scaffold(
@@ -61,7 +74,7 @@ class PickupConfirmation extends StatelessWidget {
                   if (context.mounted) {
                     Navigator.pushNamedAndRemoveUntil(
                       context,
-                      '/customer_dashboard',
+                      '/instant_pickup_order_placed',
                       (route) => false,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(

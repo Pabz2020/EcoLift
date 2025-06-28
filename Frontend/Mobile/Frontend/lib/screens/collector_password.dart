@@ -75,9 +75,11 @@ class _CollectorPasswordState extends State<CollectorPassword>
           'nicNumber': collectorData['nicNumber'],
           'vehicleInfo': collectorData['vehicleInfo'],
           'wasteTypes': collectorData['wasteTypes'],
+          if (collectorData['location'] != null)
+            'location': collectorData['location'],
         };
         final response = await http.post(
-          Uri.parse('http://10.0.2.2:3000/api/users/register'),
+          Uri.parse('http://10.0.2.2:4000/api/users/register'),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',

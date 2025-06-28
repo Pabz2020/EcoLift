@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  static const String baseUrl = 'http://<your-ip>:<port>'; // replace with actual IP and port
+  static const String baseUrl = 'http://10.0.2.2:4000'; // For Android emulator
+  // static const String baseUrl = 'http://localhost:4000'; // For iOS simulator
+  // static const String baseUrl = 'http://your-actual-ip:4000'; // For physical device
 
   static Future<Map<String, dynamic>> registerCollector({
     required String name,

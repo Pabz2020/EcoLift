@@ -214,7 +214,7 @@ class _CollectorPersonalInfoState extends State<CollectorPersonalInfo>
                                       'name': _nameController.text,
                                       'phone': _phoneController.text,
                                       'email': _emailController.text,
-                                      'nic': _nicController.text,
+                                      'nicNumber': _nicController.text,
                                     },
                                   );
                                 }

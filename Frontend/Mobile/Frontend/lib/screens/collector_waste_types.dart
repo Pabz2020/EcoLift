@@ -271,7 +271,7 @@ class _CollectorWasteTypesState extends State<CollectorWasteTypes>
                                 }
                                 Navigator.pushNamed(
                                   context,
-                                  '/collector_password',
+                                  '/collector_location',
                                   arguments: {
                                     ...widget.collectorInfo,
                                     'wasteTypes': _selectedWasteTypes,

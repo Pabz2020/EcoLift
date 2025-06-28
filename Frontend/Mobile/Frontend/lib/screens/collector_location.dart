@@ -4,21 +4,16 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
-class LocationSelection extends StatefulWidget {
-  final List<String> selectedWasteTypes;
-  final DateTime? scheduledDateTime;
+class CollectorLocation extends StatefulWidget {
+  final Map<String, dynamic> collectorInfo;
 
-  const LocationSelection({
-    super.key,
-    required this.selectedWasteTypes,
-    this.scheduledDateTime,
-  });
+  const CollectorLocation({super.key, required this.collectorInfo});
 
   @override
-  State<LocationSelection> createState() => _LocationSelectionState();
+  State<CollectorLocation> createState() => _CollectorLocationState();
 }
 
-class _LocationSelectionState extends State<LocationSelection> {
+class _CollectorLocationState extends State<CollectorLocation> {
   LatLng? _selectedLocation;
   bool _isLoading = true;
   String _address = '';
@@ -90,7 +85,7 @@ class _LocationSelectionState extends State<LocationSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Pickup Location'),
+        title: const Text('Select Your Current Location'),
         backgroundColor: Colors.green,
       ),
       body: Stack(
@@ -111,7 +106,8 @@ class _LocationSelectionState extends State<LocationSelection> {
               ),
               children: [
                 TileLayer(
-                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                   subdomains: ['a', 'b', 'c'],
                 ),
                 if (_selectedLocation != null)
@@ -189,12 +185,15 @@ class _LocationSelectionState extends State<LocationSelection> {
                       : () {
                           Navigator.pushNamed(
                             context,
-                            '/instant_pickup_confirmation',
+                            '/collector_password',
                             arguments: {
-                              'selectedWasteTypes': widget.selectedWasteTypes,
+                              ...widget.collectorInfo,
                               'location': {
-                                'latitude': _selectedLocation!.latitude,
-                                'longitude': _selectedLocation!.longitude,
+                                'type': 'Point',
+                                'coordinates': [
+                                  _selectedLocation!.longitude,
+                                  _selectedLocation!.latitude
+                                ],
                               },
                               'address': _address,
                             },
