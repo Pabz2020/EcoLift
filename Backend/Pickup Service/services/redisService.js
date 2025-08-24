@@ -4,6 +4,10 @@ const { createClient } = require('redis');
 const client = createClient({
     url: process.env.REDIS_URL || 'redis://localhost:6379'
 });
+// const client = createClient({
+//     url: 'redis://127.0.0.1:6379',
+//     legacyMode: true, // if needed for older libs like connect-redis
+// });
 
 // Error handling
 client.on('error', (err) => {
@@ -42,7 +46,7 @@ const findNearbyActiveCollectors = async (longitude, latitude, radius = 5, unit 
                 unit
             }
         );
-        
+
         // Filter to only active collectors
         const activeCollectors = [];
         for (const collectorId of nearbyCollectors) {
@@ -51,7 +55,7 @@ const findNearbyActiveCollectors = async (longitude, latitude, radius = 5, unit 
                 activeCollectors.push(collectorId);
             }
         }
-        
+
         return activeCollectors;
     } catch (error) {
         console.error('Redis find nearby error:', error);
