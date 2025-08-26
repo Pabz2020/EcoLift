@@ -22,13 +22,13 @@ app.use((req,res,next)=>{
 app.use('/api/users', userRoutes);
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecolift_users')
     .then(() => {
         console.log('Connected to MongoDB');
         // Connect to Redis after MongoDB connection is established
         connectRedis();
 
-        const port = process.env.PORT 
+        const port = process.env.PORT || 4000;
 
         // Define a route for the root of the app
         app.listen(port, () => {
