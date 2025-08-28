@@ -39,10 +39,10 @@ const userSchema = new schema({
         coordinates: {
             type: [Number],
             validate: {
-                validator: function(v) {
+                validator: function (v) {
                     // Only validate if coordinates are provided
                     if (!v || v.length === 0) return true;
-                    return v.length === 2 && 
+                    return v.length === 2 &&
                         v[0] >= -180 && v[0] <= 180 &&
                         v[1] >= -90 && v[1] <= 90;
                 },
@@ -52,27 +52,27 @@ const userSchema = new schema({
     },
     nicNumber: {
         type: String,
-        required: function() { return this.role === 'collector'; }
+        required: function () { return this.role === 'collector'; }
     },
     vehicleInfo: {
         type: {
             type: String,
-            required: function() { return this.role === 'collector'; }
+            required: function () { return this.role === 'collector'; }
         },
         number: {
             type: String,
-            required: function() { return this.role === 'collector'; }
+            required: function () { return this.role === 'collector'; }
         },
         capacity: {
             type: Number,
-            required: function() { return this.role === 'collector'; }
+            required: function () { return this.role === 'collector'; }
         }
     },
     wasteTypes: {
         type: [String],
-        required: function() { return this.role === 'collector'; },
+        required: function () { return this.role === 'collector'; },
         validate: {
-            validator: function(v) {
+            validator: function (v) {
                 // Skip validation if not a collector
                 if (this.role !== 'collector') return true;
                 // Otherwise ensure at least one waste type
@@ -80,7 +80,8 @@ const userSchema = new schema({
             },
             message: 'At least one waste type must be specified'
         }
-    }
+    },
+    fcmToken: { type: String, default: null, index: true },
 }, { timestamps: true });
 
 userSchema.index({ location: '2dsphere' });
