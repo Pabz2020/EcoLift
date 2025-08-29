@@ -68,23 +68,7 @@
   color: #2ecc71;
 }
 
-/* Login button special styling */
-.nav-links li:last-child button {
-  background: linear-gradient(45deg, #2ecc71, #3498db);
-  padding: 0.5rem 1.5rem;
-  border-radius: 25px;
-  color: white;
-  transition: all 0.3s ease;
-}
 
-.nav-links li:last-child button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-}
-
-.nav-links li:last-child button::after {
-  display: none;
-}
 
 .menu-icon {
   display: none;
@@ -145,10 +129,7 @@
     width: 100%;
   }
 
-  .nav-links li:last-child button {
-    width: auto;
-    padding: 0.8rem 2rem;
-  }
+
   
   .menu-icon {
     display: flex;
