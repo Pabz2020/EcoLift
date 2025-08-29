@@ -1,9 +1,15 @@
 const { createClient } = require('redis');
 
-// Create Redis client
+// Create Redis client (modern approach)
 const client = createClient({
     url: process.env.REDIS_URL || 'redis://localhost:6379'
 });
+
+// Optional legacy mode fallback (uncomment only if needed for older libraries like connect-redis)
+// const client = createClient({
+//     url: 'redis://127.0.0.1:6379',
+//     legacyMode: true, // Use this if you face compatibility issues
+// });
 
 // Error handling
 client.on('error', (err) => {
@@ -12,16 +18,16 @@ client.on('error', (err) => {
 
 // Connection handling
 client.on('connect', () => {
-    console.log('Redis client connected');
+    console.log('✅ Redis client connected');
 });
 
 // Connect to Redis
 const connectRedis = async () => {
     try {
         await client.connect();
-        console.log('Connected to Redis');
+        console.log('✅ Connected to Redis');
     } catch (error) {
-        console.error('Redis connection error:', error);
+        console.error('❌ Redis connection error:', error);
         // Try to reconnect after 5 seconds
         setTimeout(connectRedis, 5000);
     }
@@ -33,16 +39,10 @@ const findNearbyActiveCollectors = async (longitude, latitude, radius = 5, unit 
         // Get collectors within the specified radius
         const nearbyCollectors = await client.geoSearch(
             'collector-locations',
-            {
-                longitude,
-                latitude
-            },
-            {
-                radius,
-                unit
-            }
+            { longitude, latitude },
+            { radius, unit }
         );
-        
+
         // Filter to only active collectors
         const activeCollectors = [];
         for (const collectorId of nearbyCollectors) {
@@ -51,7 +51,7 @@ const findNearbyActiveCollectors = async (longitude, latitude, radius = 5, unit 
                 activeCollectors.push(collectorId);
             }
         }
-        
+
         return activeCollectors;
     } catch (error) {
         console.error('Redis find nearby error:', error);
@@ -81,4 +81,4 @@ module.exports = {
     connectRedis,
     findNearbyActiveCollectors,
     getCollectorLocation
-}; 
+};

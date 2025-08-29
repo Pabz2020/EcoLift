@@ -13,7 +13,7 @@ app.use(cors()); // Use CORS to allow requests from different origins
 // middleware
 app.use(express.json());
 
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     console.log(req.path);
     console.log(req.headers);
     next();
@@ -26,9 +26,13 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log('Connected to MongoDB');
         // Connect to Redis after MongoDB connection is established
-        connectRedis();
+connectRedis();
 
-        const port = process.env.PORT 
+const port = process.env.PORT || 5000;
+server.listen(port, () => {
+    console.log(`✅ Pickup Service running on port ${port}`);
+});
+
 
         // Define a route for the root of the app
         app.listen(port, () => {

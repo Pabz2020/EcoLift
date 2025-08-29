@@ -64,7 +64,7 @@ function setupWebSocket(server) {
                     try {
                         const parsed = JSON.parse(message);
                         console.log(`Received message type: ${parsed.type}`);
-                        
+
                         // Handle different message types
                         if (role === 'collector' && parsed.type === 'LOCATION_UPDATE') {
                             handleCollectorLocationUpdate(userId, parsed.coordinates, token);
@@ -118,13 +118,14 @@ function setupWebSocket(server) {
 async function handleCollectorLocationUpdate(collectorId, coordinates, token) {
     try {
         // Forward the location update to the User Service
-        await axios.patch(`${process.env.USER_SERVICE_URL}/api/users/collectors/location`, 
-            { coordinates },
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
-        
-        console.log(`Updated location for collector ${collectorId}: [${coordinates}]`);
-        
+await axios.patch(
+    `${process.env.USER_SERVICE_URL}/api/users/collectors/location`,
+    { coordinates },
+    { headers: { Authorization: `Bearer ${token}` } }
+);
+
+console.log(`Updated location for collector ${collectorId}: [${coordinates}]`);
+
         // Notify the collector that the update was successful
         const client = clients.collectors.get(collectorId);
         if (client && client.readyState === WebSocket.OPEN) {
@@ -135,7 +136,7 @@ async function handleCollectorLocationUpdate(collectorId, coordinates, token) {
         }
     } catch (error) {
         console.error('Error updating collector location:', error.message);
-        
+
         // Notify the collector about the error
         const client = clients.collectors.get(collectorId);
         if (client && client.readyState === WebSocket.OPEN) {
