@@ -38,7 +38,6 @@ export default function SubNavBar() {
                     <li><button className={active === '/OurService' ? 'active' : ''} onClick={() => handleLinkClick('/OurService')}>Our Services</button></li>
                     <li><button className={active === '/AboutUs' ? 'active' : ''} onClick={() => handleLinkClick('/AboutUs')}>About Us</button></li>
                     <li><button className={active === '/Contact' ? 'active' : ''} onClick={() => handleLinkClick('/Contact')}>Contact</button></li>
-                    <li><button className={active === '/Login' ? 'active' : ''} onClick={() => handleLinkClick('/Login')}>Login</button></li>
                 </ul>
                 <div className={`menu-icon ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
                     <span className="bar"></span>
