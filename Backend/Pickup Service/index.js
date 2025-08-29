@@ -31,21 +31,23 @@ setupWebSocket(server);
 mongoose.connect(process.env.MONGO_URI)
     .then(async () => {
         console.log('✅ Connected to MongoDB');
+// Connect to Redis
+try {
+    await connectRedis();
+    console.log('✅ Connected to Redis');
+} catch (err) {
+    console.error('❌ Redis connection error:', err);
+    console.log('⚠️  Continuing without Redis — notifications will still work via User Service API');
+}
 
-        // Connect to Redis
-        // try {
-        //     await connectRedis();
-        //     console.log('✅ Connected to Redis');
-        // } catch (err) {
-        //     console.error('❌ Redis connection error:', err);
-        //     console.log('⚠️  Continuing without Redis - notifications will still work via User Service API');
-        // }
+// Start the Pickup Service server
+const port = process.env.PORT || 5000;
+server.listen(port, () => {
+    console.log(`✅ Pickup Service running on port ${port}`);
+    console.log(`✅ WebSocket server initialized for real-time notifications`);
+    console.log(`✅ Notification system ready`);
+});
 
-        const port = process.env.PORT || 5000;
-        server.listen(port, () => {
-            console.log(`✅ Pickup Service running on port ${port}`);
-            console.log(`✅ WebSocket server initialized for real-time notifications`);
-            console.log(`✅ Notification system ready`);
         });
     })
     .catch(err => console.error('❌ Database connection error:', err));

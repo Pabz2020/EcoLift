@@ -118,12 +118,13 @@ function setupWebSocket(server) {
 async function handleCollectorLocationUpdate(collectorId, coordinates, token) {
     try {
         // Forward the location update to the User Service
-        await axios.patch(`${process.env.USER_SERVICE_URL}/api/users/collectors/location`,
-            { coordinates },
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
+await axios.patch(
+    `${process.env.USER_SERVICE_URL}/api/users/collectors/location`,
+    { coordinates },
+    { headers: { Authorization: `Bearer ${token}` } }
+);
 
-        console.log(`Updated location for collector ${collectorId}: [${coordinates}]`);
+console.log(`Updated location for collector ${collectorId}: [${coordinates}]`);
 
         // Notify the collector that the update was successful
         const client = clients.collectors.get(collectorId);

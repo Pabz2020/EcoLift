@@ -25,18 +25,26 @@ const pickupRequestSchema = new mongoose.Schema({
             }
         }
     },
-    items: {
-        type: [
-            {
-                type: { type: String, required: true },
-                quantity: { type: Number, required: true },
-                description: { type: String }
-            }
-        ],
-        required: true,
-        validate: {
-            validator: function (v) {
-                return v.length > 0 && v.every(item =>
+items: {
+    type: [
+        {
+            type: { type: String, required: true },
+            quantity: { type: Number, required: true },
+            description: { type: String }
+        }
+    ],
+    required: true,
+    validate: {
+        validator: function (v) {
+            return v.length > 0 && v.every(item =>
+                item.type && typeof item.type === 'string' &&
+                item.quantity && typeof item.quantity === 'number'
+            );
+        },
+        message: 'Items must contain at least one valid object with type and quantity'
+    }
+}
+
                     typeof item.type === 'string' && item.type.trim() !== '' &&
                     typeof item.quantity === 'number'
                 );

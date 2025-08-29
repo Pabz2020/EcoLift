@@ -4,14 +4,13 @@ const axios = require('axios');
 const { findNearbyActiveCollectors } = require('../services/redisService');
 const { sendNotification } = require('../services/notificationService');
 
-
 const createPickupRequest = async (req, res) => {
     try {
         const isInstant = !req.body.scheduledTime;
         const requestType = isInstant ? 'instant' : 'scheduled';
 
+        // Create pickup request data
         const pickupData = {
-
             customerId: req.user.userId,
             location: req.body.location,
             items: req.body.items,
@@ -21,55 +20,108 @@ const createPickupRequest = async (req, res) => {
 
         const pickup = await PickupRequest.create(pickupData);
 
+        // Fetch customer details
         const customerResponse = await axios.get(`${process.env.USER_SERVICE_URL}/api/users/customer/requested/${req.user.userId}`);
-        console.log("customerResponse data", customerResponse.data);
-
         const customer = customerResponse.data.customer;
 
         if (isInstant) {
-            const users = await axios.get(`${process.env.USER_SERVICE_URL}/api/users/collectors/all`);
-            console.log("users*********************");
-            console.log(users.data.collectors);
+            const coordinates = req.body.location.coordinates;
+            const [longitude, latitude] = coordinates;
 
-            for (const user of users.data.collectors) {
-                console.log("user.fcmToken", user.fcmToken);
-                if (user.fcmToken) {
-                    try {
-                        const isSent = await sendNotification(
-                            'New Instant Pickup',
-                            'A customer has requested an instant pickup.',
-                            user.fcmToken,
-                            {
-                                pickupId: pickup._id.toString(),
-                                type: 'INSTANT_PICKUP',
-                                customerId: customer._id.toString(),
-                                location: JSON.stringify(pickup.location), // ✅ string
-                                items: JSON.stringify(pickup.items),       // ✅ string
+            // STEP 1: Check active collectors via Redis first
+            const activeCollectorIds = await findNearbyActiveCollectors(longitude, latitude, 5);
+
+            const io = getIO();
+
+            if (activeCollectorIds.length > 0) {
+                // Notify active collectors in real-time via WebSocket
+                io.notifyCollectors(
+                    {
+                        type: 'NEW_INSTANT_REQUEST',
+                        request: pickup.toJSON()
+                    },
+                    activeCollectorIds
+                );
+
+                console.log(`Notified ${activeCollectorIds.length} active collectors via Redis/WebSocket`);
+            } else {
+                // STEP 2: Fallback → Get nearby collectors from User Service
+                console.log('No active collectors found in Redis, using User Service API...');
+                try {
+                    const { data } = await axios.get(
+                        `${process.env.USER_SERVICE_URL}/api/users/collectors/nearby`,
+                        {
+                            params: {
+                                coordinates,
+                                maxDistance: 5000
+                            },
+                            headers: {
+                                Authorization: req.header('Authorization')
                             }
-                        );
+                        }
+                    );
 
+                    const collectorIds = data.collectors.map(c => c._id.toString());
+                    io.notifyCollectors(
+                        {
+                            type: 'NEW_INSTANT_REQUEST',
+                            request: pickup.toJSON()
+                        },
+                        collectorIds
+                    );
 
-                        console.log('location', pickup.location)
-                        console.log('waste types', pickup.items);
-                        console.log('Notification sent:', isSent);
-                        console.log(`Notification sent to ${user._id}`);
-                    } catch (error) {
-                        console.error(`Failed to send notification to ${user._id}:`, error.message);
-                    }
-
+                    console.log(`Fallback successful → Notified ${collectorIds.length} collectors from User Service`);
+                } catch (apiError) {
+                    console.error('Error calling User Service API:', apiError.message);
                 }
-
-
             }
 
-            res.status(201).json({ message: 'Pickup request created', pickup: { ...pickup.toObject(), customer } });
-            console.log("Pickup request created successfully");
+            // STEP 3: Send FCM notifications to all collectors
+            try {
+                const allCollectors = await axios.get(`${process.env.USER_SERVICE_URL}/api/users/collectors/all`);
+                for (const user of allCollectors.data.collectors) {
+                    if (user.fcmToken) {
+                        try {
+                            await sendNotification(
+                                'New Instant Pickup',
+                                'A customer has requested an instant pickup.',
+                                user.fcmToken,
+                                {
+                                    pickupId: pickup._id.toString(),
+                                    type: 'INSTANT_PICKUP',
+                                    customerId: customer._id.toString(),
+                                    location: JSON.stringify(pickup.location),
+                                    items: JSON.stringify(pickup.items),
+                                }
+                            );
+                            console.log(`FCM notification sent to collector: ${user._id}`);
+                        } catch (error) {
+                            console.error(`Failed to send notification to ${user._id}:`, error.message);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching all collectors for FCM:', error.message);
+            }
         }
+
+        res.status(201).json({
+            message: 'Pickup request created',
+            pickup: { ...pickup.toObject(), customer },
+        });
+
+        console.log("Pickup request created successfully");
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error creating pickup request', error: error.message });
+        res.status(500).json({
+            message: 'Error creating pickup request',
+            error: error.message,
+        });
     }
-}
+};
+
+module.exports = { createPickupRequest };
+
 
 // const createPickupRequest = async (req, res) => {
 //     try {

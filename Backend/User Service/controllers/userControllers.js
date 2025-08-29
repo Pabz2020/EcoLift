@@ -5,17 +5,19 @@ const redisService = require('../services/redisService');
 
 
 const register = async (req, res) => {
-    const {
-        name,
-        phone,
-        email,
-        password,
-        role,
-        address,
-        location,
-        nicNumber,
-        vehicleInfo,
-        wasteTypes
+const {
+    name,
+    phone,
+    email,
+    password,
+    role,
+    address,
+    location,
+    nicNumber,
+    vehicleInfo,
+    wasteTypes
+} = req.body;
+
     } = req.body;
 
     try {
@@ -41,13 +43,14 @@ const register = async (req, res) => {
                 return res.status(400).json({ message: 'NIC number is required for collectors' });
             }
             if (!vehicleInfo?.type || !vehicleInfo?.number || !vehicleInfo?.capacity) {
-                return res.status(400).json({
-                    message: 'Vehicle information (type, number, and capacity) is required for collectors'
-                });
-            }
-            if (!wasteTypes || !Array.isArray(wasteTypes) || wasteTypes.length === 0) {
-                return res.status(400).json({
-                    message: 'At least one waste type must be specified for collectors'
+return res.status(400).json({
+    message: 'Vehicle information (type, number, and capacity) is required for collectors'
+});
+
+return res.status(400).json({
+    message: 'At least one waste type must be specified for collectors'
+});
+
                 });
             }
         }
@@ -164,36 +167,48 @@ const updateCollectorLocation = async (req, res) => {
         }
 
         const coordinates = req.body.coordinates;
-        console.log("📍 Incoming collector coordinates:", coordinates);
+console.log("📍 Incoming collector coordinates:", coordinates);
 
-        if (!coordinates || !Array.isArray(coordinates) || coordinates.length !== 2) {
-            console.log("❌ Invalid coordinates format");
-            return res.status(400).json({ message: 'Invalid coordinates format. Expected [longitude, latitude]' });
+if (!coordinates || !Array.isArray(coordinates) || coordinates.length !== 2) {
+    console.log("❌ Invalid coordinates format");
+    return res.status(400).json({ message: 'Invalid coordinates format. Expected [longitude, latitude]' });
+}
+
+// Destructure for clarity
+const [longitude, latitude] = coordinates;
+console.log(`✅ Parsed coordinates: Longitude=${longitude}, Latitude=${latitude}`);
+
+// Update location in MongoDB
+console.log("➡️ Updating MongoDB with collector location...");
+const user = await User.findByIdAndUpdate(
+    req.user.userId,
+    {
+        location: {
+            type: 'Point',
+            coordinates: [longitude, latitude]
         }
+    },
+    { new: true, runValidators: true }
+);
 
-        // Destructure for clarity
-        const [longitude, latitude] = coordinates;
-        console.log(`✅ Parsed coordinates: Longitude=${longitude}, Latitude=${latitude}`);
-
-        // Update location in MongoDB
-        console.log("➡️ Updating MongoDB with collector location...");
-        const user = await User.findByIdAndUpdate(
-            req.user.userId,
-            {
-                location: {
-                    type: 'Point',
-                    coordinates: [longitude, latitude]
                 }
             },
             { new: true, runValidators: true }
         );
 
-        if (!user) {
-            console.log("❌ User not found in database");
-            return res.status(404).json({ message: 'User not found' });
-        }
+if (!user) {
+    console.log("❌ User not found in database");
+    return res.status(404).json({ message: 'User not found' });
+}
 
-        console.log("✅ Location updated in MongoDB:", user.location);
+console.log("✅ Location updated in MongoDB:", user.location);
+
+// Also update location in Redis for real-time tracking
+await redisService.updateCollectorLocation(
+    req.user.userId,
+    longitude,
+    latitude
+);
 
         res.status(200).json({
             message: 'Location updated successfully',
@@ -280,6 +295,7 @@ const getNearbyActiveCollectors = async (req, res) => {
         const coordinates = req.query.coordinates.map(Number);
         const [longitude, latitude] = coordinates;
         const radius = parseFloat(req.query.radius) || 5; // Default 5 km
+
 
         // Get collector IDs from Redis
         const collectorIds = await redisService.findNearbyCollectors(
@@ -392,3 +408,58 @@ module.exports = {
     getRequestedCollectorById,
     getCollectorLocation
 };
+
+        
+        // Get collector IDs from Redis
+        const collectorIds = await redisService.findNearbyCollectors(
+            longitude,
+            latitude,
+            radius
+        );
+        
+        if (!collectorIds.length) {
+            return res.status(200).json({
+                message: 'No active collectors found nearby',
+                collectors: []
+            });
+        }
+        
+        // Get full collector data from MongoDB using the IDs from Redis
+        const collectors = await User.find({
+            _id: { $in: collectorIds },
+            role: 'collector'
+        }).select('-password -__v');
+        
+        // Add real-time location from Redis
+        const collectorsWithLocation = await Promise.all(
+            collectors.map(async (collector) => {
+                const redisLocation = await redisService.getCollectorLocation(collector._id.toString());
+                return {
+                    ...collector.toObject(),
+                    currentLocation: redisLocation
+                };
+            })
+        );
+        
+        res.status(200).json({
+            message: 'Nearby active collectors found',
+            count: collectorsWithLocation.length,
+            collectors: collectorsWithLocation
+        });
+    } catch (error) {
+        res.status(400).json({ message: 'Error finding active collectors', error: error.message });
+    }
+};
+
+module.exports = {
+    register,
+    login,
+    updateCollectorLocation,
+    getNearbyCollectors,
+    getNearbyActiveCollectors,
+    getAllCollectors,
+    getRequestedCustomerById,
+    getRequestedCollectorById,
+    getCollectorLocation
+};
+
