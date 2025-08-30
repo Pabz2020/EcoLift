@@ -68,6 +68,30 @@
   color: #2ecc71;
 }
 
+/* Ensure all buttons have consistent styling */
+.nav-links li button {
+  background: none !important;
+  border: none !important;
+  color: white !important;
+  font-size: 1rem !important;
+  cursor: pointer !important;
+  padding: 0.5rem 0 !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.nav-links li button:hover {
+  color: #2ecc71 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.nav-links li button.active {
+  color: #2ecc71 !important;
+}
+
 
 
 .menu-icon {
