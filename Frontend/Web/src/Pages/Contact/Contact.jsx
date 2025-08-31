@@ -84,7 +84,7 @@ export default function Contact() {
               </div>
               <div className="contact-info-content">
                 <h3>Phone Number</h3>
-                <p>+123 456 7890</p>
+                <p>+94 764948887</p>
                 <span className="contact-note">Call us anytime</span>
               </div>
             </div>
@@ -206,15 +206,15 @@ export default function Contact() {
 
       <div className="map-container" data-aos="fade-up">
         <h2>Find Us</h2>
-        <p>Visit our office in the beautiful city of Galle, Sri Lanka</p>
+        <p>Visit our office in Hapugala, Galle, Sri Lanka</p>
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.2345678901234!2d80.218569314789!3d6.053516995585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae173d78c000001%3A0x23c9a2a7b6a0a0e!2sGalle%2C%20Sri%20Lanka!5e0!3m2!1sen!2slk!4v1620912185569!5m2!1sen!2slk"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.2345678901234!2d80.218569314789!3d6.053516995585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae173d78c000001%3A0x23c9a2a7b6a0a0e!2sHapugala%2C%20Galle%2C%20Sri%20Lanka!5e0!3m2!1sen!2slk!4v1620912185569!5m2!1sen!2slk"
           width="100%"
           height="450"
           style={{ border: 0 }}
           allowFullScreen=""
           loading="lazy"
-          title="Google Maps Location of Galle, Sri Lanka"
+          title="Google Maps Location of Hapugala, Galle, Sri Lanka"
         ></iframe>
       </div>
     </div>
