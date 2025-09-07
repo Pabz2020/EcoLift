@@ -3,28 +3,40 @@ import './AboutUs.css'; // New stylesheet
 
 const teamMembers = [
   {
-    name: "Pabasara Jayawardhana",
-    role: "Chairman",
-    bio: "An artist is someone engaged in an activity deemed to be art.",
+    name: "Mr. Wasana Delpage",
+    role: "Product Owner",
+    bio: "Leading product strategy and development with a focus on innovative waste management solutions.",
+    image: "/images/wasana.jpg"
+  },
+  {
+    name: "Mr. Ishan Piyadigama",
+    role: "Product Owner",
+    bio: "Driving product vision and ensuring customer-centric development of our waste management platform.",
+    image: "/images/Ishan Piyadigama.jpg"
+  },
+  {
+    name: "Mr. Pabasara Jayawardhana",
+    role: "Manager - EcoLift",
+    bio: "Overseeing overall operations and strategic direction of EcoLift's waste management initiatives.",
     image: "/images/pabasara.jpeg"
   },
   {
-    name: "Sasini Perera",
-    role: "Boss",
-    bio: "An artist is someone engaged in an activity deemed to be art.",
+    name: "Ms. Sasini Perera",
+    role: "Manager - Product & Services",
+    bio: "Managing product development and service delivery to ensure exceptional customer experience.",
     image: "/images/sasini.jpeg"
   },
   {
-    name: "Ashan Munasinghe",
-    role: "UI/UX Designer",
-    bio: "An artist is someone engaged in an activity deemed to be art.",
+    name: "Mr. Ashan Munasinghe",
+    role: "Technical Lead",
+    bio: "Leading technical development and innovation in waste management technologies and systems.",
     image: "/images/ashan.jpeg"
   },
   {
-    name: "Ishan Kendawela",
-    role: "Artist",
-    bio: "An artist is someone engaged in an activity deemed to be art.",
-    image: "/images/ishan.jpeg"
+    name: "Mr. Ishan Sachithra",
+    role: "Human Resource Manager",
+    bio: "Managing human resources and fostering a positive work environment for our dedicated team.",
+    image: "/images/123.jpg"
   }
 ];
 
@@ -35,10 +47,11 @@ export default function AboutUs() {
         <div className="header-content">
           <h1 className="about-us-title">About Eco LIFT</h1>
           <p className="about-us-subtitle">
-            Pioneering a sustainable future through innovative waste management solutions.
+            Your trusted partner in comprehensive waste management and environmental sustainability.
           </p>
         </div>
       </header>
+
 
       <section className="company-info-section">
         <div className="info-card" data-aos="fade-right">

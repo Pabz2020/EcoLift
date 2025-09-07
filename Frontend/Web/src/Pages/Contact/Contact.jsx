@@ -95,7 +95,7 @@ export default function Contact() {
               </div>
               <div className="contact-info-content">
                 <h3>Email Address</h3>
-                <p>ishankendawela@gmail.com</p>
+                <p>ecolift@gmail.com</p>
                 <span className="contact-note">We'll respond quickly</span>
               </div>
             </div>
@@ -124,84 +124,6 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="contact-form-container" data-aos="fade-left">
-          <h2>Send Us a Message</h2>
-          <p className="form-intro">Tell us about your waste management needs and we'll provide a customized solution.</p>
-          
-          {submitStatus === 'success' && (
-            <div className="success-message">
-              <FaEnvelope className="success-icon" />
-              <p>Thank you! Your message has been sent successfully. We'll get back to you within 24 hours.</p>
-            </div>
-          )}
-          
-          {submitStatus === 'error' && (
-            <div className="error-message">
-              <p>Sorry! There was an error sending your message. Please try again or contact us directly.</p>
-            </div>
-          )}
-
-          <form ref={form} className="contact-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input 
-                type="text" 
-                name="user_name"
-                placeholder="Your Full Name" 
-                value={formData.user_name}
-                onChange={handleInputChange}
-                required 
-              />
-            </div>
-            <div className="form-group">
-              <input 
-                type="email" 
-                name="user_email"
-                placeholder="Your Email Address" 
-                value={formData.user_email}
-                onChange={handleInputChange}
-                required 
-              />
-            </div>
-            <div className="form-group">
-              <input 
-                type="tel" 
-                name="user_phone"
-                placeholder="Your Phone Number" 
-                value={formData.user_phone}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <select 
-                name="service_type"
-                value={formData.service_type}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Select Service Type</option>
-                <option value="recycling">Recycling Services</option>
-                <option value="ewaste">E-Waste Collection</option>
-                <option value="organic">Organic Waste</option>
-                <option value="general">General Waste</option>
-                <option value="other">Other Services</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <textarea 
-                name="message"
-                placeholder="Tell us about your requirements..." 
-                rows="6" 
-                value={formData.message}
-                onChange={handleInputChange}
-                required
-              ></textarea>
-            </div>
-            <button type="submit" disabled={isSubmitting}>
-              <FaEnvelope className="button-icon" />
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </button>
-          </form>
-        </div>
       </div>
 
       <div className="map-container" data-aos="fade-up">

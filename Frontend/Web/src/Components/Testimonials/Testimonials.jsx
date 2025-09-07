@@ -4,21 +4,21 @@ import './Testimonials.css';
 const testimonialsData = [
   {
     quote: "Eco LIFT has transformed the way our company handles waste. Their service is reliable, efficient, and has helped us meet our sustainability goals.",
-    name: "John Doe",
+    name: "Mr. Milinda Shehan",
     company: "Green Enterprises",
-    avatar: "/images/avatar1.png"
+    avatar: "/images/milinda.jpeg"
   },
   {
     quote: "As a homeowner, I appreciate how easy it is to schedule pickups. The app is user-friendly, and the collectors are always on time.",
-    name: "Jane Smith",
+    name: "Mr. Dilanka Hewage",
     company: "Homeowner",
-    avatar: "/images/avatar2.png"
+    avatar: "/images/Dilanka.jpg"
   },
   {
     quote: "The best part about Eco LIFT is their commitment to the environment. I'm proud to be a part of a community that cares about our planet.",
-    name: "Samuel Green",
+    name: "Mr. Kavishka Sadaruwan",
     company: "Eco Warrior",
-    avatar: "/images/avatar3.png"
+    avatar: "/images/kavishka.jpeg"
   }
 ];
 

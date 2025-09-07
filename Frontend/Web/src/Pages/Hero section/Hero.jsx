@@ -112,38 +112,6 @@ export default function Hero() {
         </div>
       </section>
 
-      <section id="about-ecolift" className="about-section">
-        <h2 className="gradient-text">About Eco LIFT</h2>
-        <p className="about-description">
-          At Eco LIFT, we are committed to revolutionizing waste management. Our platform connects you with local collectors, making it easy to schedule pickups for recyclable materials, e-waste, and more. We believe in creating a cleaner, greener planet for future generations.
-        </p>
-        <div className="features-grid">
-          <div className="feature-card">
-            <img 
-              src="https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
-              alt="A lightbulb containing a growing plant, symbolizing green ideas and efficient solutions" 
-            />
-            <h3>Efficient Collection</h3>
-            <p>Our smart routing and scheduling system ensures timely and efficient waste collection with minimal environmental impact.</p>
-          </div>
-          <div className="feature-card">
-            <img 
-              src="https://images.pexels.com/photos/3845549/pexels-photo-3845549.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
-              alt="A diverse group of people planting trees together, representing community focus" 
-            />
-            <h3>Community Focused</h3>
-            <p>We work with local communities to promote recycling, environmental awareness, and sustainable living practices.</p>
-          </div>
-          <div className="feature-card">
-            <img 
-              src="https://images.pexels.com/photos/416528/pexels-photo-416528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
-              alt="Wind turbines in a lush green field, showing a sustainable impact on the world" 
-            />
-            <h3>Sustainable Impact</h3>
-            <p>By using Eco LIFT, you contribute to a circular economy, reduce landfill waste, and help protect our planet's future.</p>
-          </div>
-        </div>
-      </section>
 
       <Testimonials />
 
