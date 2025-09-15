@@ -36,7 +36,7 @@ const teamMembers = [
     name: "Mr. Ishan Sachithra",
     role: "Human Resource Manager",
     bio: "Managing human resources and fostering a positive work environment for our dedicated team.",
-    image: "/images/123.jpg"
+    image: "/images/ishan.jpeg"
   }
 ];
 
